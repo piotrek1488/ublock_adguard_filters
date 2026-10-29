@@ -1,0 +1,265 @@
+! Personal filters, grouped by site (alphabetical).
+! Inside a site: element ids, classes, other selectors, scriptlets, network rules.
+! Keep one filter per line and add new ones to the matching site section.
+
+! ===== 9to5 network =====
+9to5google.com,9to5mac.com,dronedj.com,electrek.co,spaceexplored.com##.container.aside.article
+9to5google.com,9to5mac.com,dronedj.com,electrek.co,spaceexplored.com##.ninetofive-branded-rss.widget
+9to5toys.com##.bg-pc-dronedj.cross-slider-content
+9to5toys.com##.bg-pc-electrek.cross-slider-content
+9to5toys.com##.bg-pc-google.cross-slider-content
+9to5toys.com##.bg-pc-mac.cross-slider-content
+
+! ===== allegro.pl =====
+allegro.pl###filters .carousel-item .opbox-sheet-wrapper
+allegro.pl###search-results > div > .carousel-item .opbox-sheet-wrapper
+
+! ===== businessinsider.com.pl =====
+businessinsider.com.pl##.follow-us
+businessinsider.com.pl##.mvp-embed-wrapper.pulsembed_embed
+businessinsider.com.pl##.related_articles-container
+businessinsider.com.pl##.see-also-popular_container
+businessinsider.com.pl##.video-disclaimer
+
+! ===== carry.pl =====
+carry.pl##.show.fade.modal-backdrop
+
+! ===== ceneo.pl =====
+www.ceneo.pl##aside#REK_KATEGORIA_LISTING_OFERT.recommendations
+www.ceneo.pl##div.highlighted-offers
+www.ceneo.pl##div.highlighted-offers.js_category-list-body
+www.ceneo.pl##div.highlighted-offers.js_category-list-body[data-promotion-creative="PromotedOffer"]
+www.ceneo.pl##div.recommendations__row
+www.ceneo.pl##div.zones
+
+! ===== chomikuj.pl =====
+chomikuj.pl##.pp_download_frame.pp_frame
+
+! ===== coachingdao.pl =====
+coachingdao.pl##.bg-black\/95.justify-center.items-center.w-full.h-screen.hidden.z-\[999\].top-0.left-0.fixed
+
+! ===== context.reverso.net =====
+context.reverso.net###dapp-banner
+
+! ===== dystryktzero.pl =====
+www.dystryktzero.pl##div.abyt_banner
+
+! ===== eboa.toya.net.pl =====
+eboa.toya.net.pl##.cm__body
+
+! ===== empik.com =====
+www.empik.com##.search-gam-banner
+
+! ===== eska.pl =====
+www.eska.pl##div.radio--hook.single_hit--s1.single-hit
+
+! ===== filmozercy.com =====
+filmozercy.com##.c-ads--ad-news.c-ads
+filmozercy.com##.c-ads--ad-news.c-ads > [href="http://filmozercy.com/wspieraj-nasza-prace-wylacz-adblocka"]
+filmozercy.com##.c-ads--ad-sidebar.c-ads
+filmozercy.com##div.c-ads--ad-index.c-ads:nth-of-type(1)
+filmozercy.com##div.c-ads--ad-index.c-ads:nth-of-type(2)
+
+! ===== filmweb.pl =====
+www.filmweb.pl##.faDesktopVideoBranding__container
+www.filmweb.pl##.faScreening--clickable.faScreening
+www.filmweb.pl##.filmPage.FilmPage.page > .fa__slot--billboard.fa__slot
+
+! ===== getcomics.info =====
+getcomics.info##.adsbyvli
+getcomics.info##.page-sidebar
+
+! ===== getcomics.org =====
+getcomics.org###getco-337571448
+getcomics.org###menu-main-menu-1 > .menu-item-356943.menu-item-object-custom.menu-item-type-custom.menu-item
+getcomics.org##.gjqry-1.gjqry
+getcomics.org##.tag-getcomics-update.category-news.hentry.sticky.has-post-thumbnail.format-standard.status-publish.type-post.post.post-145619
+
+! ===== google (search + cookie consent) =====
+www.google.com###bres
+www.google.com###lb
+google.*##.aID8W.m114nf.t7xA6
+google.*##.jw8mI
+google.*##.vUd4jb
+google.*##.widget-consent-fullscreen.widget-consent
+google.*##.wwYr3.aID8W.bErdLd
+google.*##div[jsname][jsaction^="dg_close"]
+google.*##html:style(overflow: visible !important;)
+www.google.com##:root:style(overflow-y: visible !important;)
+google.*##+js(aeld, DOMContentLoaded, CONSENT)
+google.*##^script:has-text(consentCookiePayload)
+||consent.google.*^
+||consent.google.com/$subdocument
+||consent.google.com/?continue=https://www.youtube.com/&origin=https://www.youtube.com&pc=yt&hl=pl&gl=PL&if=1&m=0&l=0&uxe=23934712$subdocument
+
+! ===== gry-online.pl =====
+gry-online.pl##.bb-widget
+www.gry-online.pl##.lh-big:style(display: none !important;)
+www.gry-online.pl##.lh-c:style(border-bottom: none !important;)
+www.gry-online.pl##.mp-hots
+www.gry-online.pl##.mp-hots-c
+www.gry-online.pl##.rulgol2020-ban
+www.gry-online.pl##div.mp-frame-c
+||www.gry-online.pl/im/ruletka/*$image
+
+! ===== imagazine.pl =====
+imagazine.pl###mag-ad
+imagazine.pl##div.ad
+imagazine.pl##div.owl-drag.owl-loaded.owl-carousel.slide.ad
+
+! ===== interia.pl (www, film, nt) =====
+film.interia.pl,nt.interia.pl,www.interia.pl###sponsCont
+nt.interia.pl###ad-box300x250
+nt.interia.pl###adStandardTop1
+nt.interia.pl###box300x2501.adsSidebarBox1.box300x250.ad.box
+nt.interia.pl###box_300x250_google1
+nt.interia.pl###box_ec_prawa_dol1
+www.interia.pl###ad-belka_biznes
+www.interia.pl###ad-belka_fakty
+www.interia.pl###ad-gora_srodek
+www.interia.pl###ad-panel_1
+film.interia.pl##.ad
+www.interia.pl##.ad-container wz-halfpage
+www.interia.pl##.ad_box300x250_dolny.ad
+www.interia.pl##.half_page.ad
+www.interia.pl##.page-header-static
+www.interia.pl##.short.sponsored-li.i14.tiles-li
+www.interia.pl##.sponsored-li.i9.tiles-li
+
+! ===== iqos.com =====
+it.iqos.com###fencing-overlay
+www.iqos.com###geo-fencing
+
+! ===== latarnikwyborczy.pl =====
+latarnikwyborczy.pl###donation_modal
+latarnikwyborczy.pl##.show.fade.modal-backdrop
+
+! ===== mediaexpert.pl =====
+mediaexpert.pl##.listing-banner-zone
+www.mediaexpert.pl##.ear-left
+www.mediaexpert.pl##.ear-right
+www.mediaexpert.pl##.listing-carousel
+
+! ===== muve.pl =====
+||muve.pl/resources/muve//img/bg.png$image
+
+! ===== naekranie.pl =====
+naekranie.pl###\31 339645104
+naekranie.pl###art_rec_prawa_szpalta
+naekranie.pl###sg_rec_prawa_szpalta
+naekranie.pl###wtg-video-home
+naekranie.pl###wtg-video-home-player
+naekranie.pl##.above_menu_small
+naekranie.pl##.ar-body.article-readContainer
+naekranie.pl##.custom_zone_header
+naekranie.pl##.desktop.content
+naekranie.pl##.lookAlso
+naekranie.pl##.mention
+naekranie.pl##.preferred-source
+naekranie.pl##.related-content
+naekranie.pl##.show.modal-backdrop
+naekranie.pl##.vod-img
+naekranie.pl##.weekend.wrapper > .d-md-block.d-none
+naekranie.pl##.wrapper > .d-md-block.d-none
+naekranie.pl##.wtg-belka
+naekranie.pl##.wtg-video
+naekranie.pl##.wtg-video-weekend
+naekranie.pl##[href="https://naekranie.pl/cdapremium"]
+||naekranie.pl/dist/images/google-threads.webp$image
+
+! ===== napisy24.pl =====
+napisy24.pl##.alert-message.alert
+
+! ===== ogladajanime.pl =====
+ogladajanime.pl###change_player_info
+ogladajanime.pl###site-content > .container
+ogladajanime.pl###slow_player_info
+ogladajanime.pl##.show.bootbox-confirm.fade.modal.bootbox
+ogladajanime.pl##.text-wrap.col-12.badge-danger.badge
+
+! ===== pepper.pl =====
+www.pepper.pl###eventThemingPortal
+||static.pepper.pl/event_promotions/*$image
+
+! ===== polsatnews.pl =====
+www.polsatnews.pl##.report-widget__container
+www.polsatnews.pl##div.report-widget__box
+
+! ===== pomponik.pl =====
+www.pomponik.pl##div:nth-of-type(23) > div
+www.pomponik.pl##div:nth-of-type(23) > div > div
+
+! ===== poral.eu =====
+poral.eu##.adblock-message:style(display: none !important;)
+poral.eu##.no-scroll:style(overflow: auto !important;)
+poral.eu##.overlay:style(display: none !important;)
+poral.eu##html.lb-disable-scrolling:style(overflow: auto !important;)
+
+! ===== ppe.pl =====
+www.ppe.pl###hot-slider
+www.ppe.pl##.banner-skyscraper
+www.ppe.pl##.content-array__media-expert
+www.ppe.pl##.d-xl-flex.d-none.navbar__ad-opera
+www.ppe.pl##.news-additional-wrapper
+www.ppe.pl##.onnetwork
+www.ppe.pl##.p-15.container--fluid
+www.ppe.pl##.sale-additional-wrapper
+www.ppe.pl##.sale-new-box-wrapper
+www.ppe.pl##div.banner-placeholder
+www.ppe.pl##div.card-sale
+www.ppe.pl##div.google-news
+www.ppe.pl##div.sale-new-box-wrapper
+
+! ===== psprices.com =====
+psprices.com##div.col-span-full.creative
+psprices.com##div.grid.grid-cols-12.gap-x-3.gap-y-0 > div.col-span-full.creative
+
+! ===== pudelek.pl =====
+www.pudelek.pl##.dwfah2c
+
+! ===== rankomat.pl =====
+rankomat.pl##.offer-promo-bar
+
+! ===== readallcomics.com =====
+readallcomics.com##div.wpd-form-wrap
+readallcomics.com##ul.sharethis1
+readallcomics.com##ul.sharethis2
+
+! ===== readcomicsonline.ru =====
+readcomicsonline.ru###fwn_videos
+readcomicsonline.ru##div.ads
+
+! ===== robertnawrowski.com =====
+www.robertnawrowski.com##.rober-przed-postem
+
+! ===== shinden.pl =====
+shinden.pl##div.box.info-messages-box
+shinden.pl##section.takie-tam.box
+
+! ===== sukces.rp.pl =====
+sukces.rp.pl##.content--page--background--anchor
+sukces.rp.pl##.header--panel--top > .inner
+
+! ===== thinkapple.pl =====
+thinkapple.pl##.a-26.g-single
+
+! ===== tracktrace.dpd.com.pl =====
+tracktrace.dpd.com.pl###banner-central-footer-bar
+
+! ===== wakacje.pl =====
+www.wakacje.pl###prokopBannerListing
+
+! ===== www.blu-shop.cz =====
+www.blu-shop.cz##.banner-category
+
+! ===== youtube.com (+ cookie consent) =====
+www.youtube.com###consent-bump
+www.youtube.com###dialog
+www.youtube.com##tp-yt-iron-overlay-backdrop
+www.youtube.com##ytd-popup-container.ytd-app.style-scope
+www.youtube.com##ytd-popup-container.ytd-app.style-scope > .ytd-popup-container.style-scope
+www.youtube.com##ytd-reel-shelf-renderer.ytd-item-section-renderer.style-scope
+youtube.com##container.ytd-player:style(width:106% !important)
+youtube.com##contents.ytd-rich-grid-renderer:style(width:60% !important)
+youtube.com##+js(set, yt.config_.EXPERIMENT_FLAGS.kevlar_watch_grid, false)
+||consent.youtube.*^

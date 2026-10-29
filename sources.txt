@@ -1,0 +1,45 @@
+# Sources merged into dist/combined.txt, in this order.
+# One per line. Empty lines and lines starting with # are ignored.
+#
+# A source is either:
+#   - a local path relative to the repo root (also works for git submodules,
+#     e.g. vendor/uAssets/filters/filters-general.txt; the workflow checks
+#     submodules out)
+#   - an https:// URL (downloaded on every build)
+#
+# `!#include` inside a source is expanded (same directory or below only).
+
+# --- Own lists ---
+lists/filters.txt
+lists/polsatnews_darkmode.txt
+
+# --- Polish Annoyance Filters (PolishFiltersTeam) ---
+# PPB.txt and PAF_supp.txt pull in their sub-lists via !#include.
+https://raw.githubusercontent.com/PolishFiltersTeam/PolishAnnoyanceFilters/master/PPB.txt
+https://raw.githubusercontent.com/PolishFiltersTeam/PolishAnnoyanceFilters/master/PAF_supp.txt
+
+# --- Polish ads filter (MajkiIT): cookies / RODO and social ---
+https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/cookies_filters/adblock_cookies.txt
+https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/adblock_social_filters/adblock_social_list.txt
+https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/polish-adblock-filters/adblock.txt
+
+# --- Allegro ---
+https://raw.githubusercontent.com/CrusheerPL/AlleBlockV2/master/AlleBlockV2.txt
+
+# --- Polish privacy filters (last updated 2022-09) ---
+https://raw.githubusercontent.com/olegwukr/polish-privacy-filters/master/adblock.txt
+
+# --- YouTube (EasyList custom lists) ---
+https://raw.githubusercontent.com/easylist/easylist/master/custom-lists/youtube-endscreen-elements.txt
+https://raw.githubusercontent.com/easylist/easylist/master/custom-lists/youtube-paid-promotion-nag.txt
+https://raw.githubusercontent.com/easylist/easylist/master/custom-lists/youtube-offers.txt
+https://raw.githubusercontent.com/easylist/easylist/master/custom-lists/youtube-shorts.txt
+
+# --- CERT.PL's Warning List ---
+https://hole.cert.pl/domains/v2/domains_adblock.txt
+
+# --- NOT included on purpose: whitelist.interia.pl list ---
+# It is an allowlist (43 "@@" exceptions, incl. "@@||interia.pl^$document" and
+# "@@||pomponik.pl^$document") that would switch filtering off on Interia and
+# Pomponik, including the Interia/Pomponik rules in lists/filters.txt. The URL
+# also carries a personal ?hash= token, which should not live in a public repo.

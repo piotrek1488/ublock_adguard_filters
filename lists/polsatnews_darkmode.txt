@@ -1,0 +1,152 @@
+! Polsat News - dark mode
+! Palette: page #121212, surface #1b1b1d, surface-2 #26262a, border #3a3a3f, text #e4e4e6, muted #a3a3a9, link #5bbcf0
+
+! --- Page background and surfaces ---
+polsatnews.pl##html:style(background:#121212 !important)
+polsatnews.pl##body:style(background:#121212 !important; color:#e4e4e6 !important)
+polsatnews.pl##.container:style(background:#1b1b1d !important)
+polsatnews.pl##.container .inside--container:style(background:#1b1b1d !important)
+polsatnews.pl##.container__sitebrand .inside--container .container__row:style(background:#1b1b1d !important)
+polsatnews.pl##.container__sitebrand .inside--container .container__row--white:style(background:#1b1b1d !important)
+polsatnews.pl##.container__sitebrand .inside--container .container__row--1:style(background:#1b1b1d !important)
+polsatnews.pl##.container__sitebrand .inside--container .container__row--2:style(background:#1b1b1d !important)
+polsatnews.pl##.header:style(background:#1b1b1d !important; box-shadow:none !important)
+polsatnews.pl##.header__main:style(background:#1b1b1d !important; box-shadow:none !important)
+polsatnews.pl##.header .platform:style(background:#1b1b1d !important; box-shadow:none !important)
+polsatnews.pl##.header .platform:before:style(background:#1b1b1d !important; box-shadow:none !important)
+polsatnews.pl##.search-form:style(background:#1b1b1d !important; box-shadow:none !important)
+polsatnews.pl##.search-form:before:style(background:#1b1b1d !important; box-shadow:none !important)
+polsatnews.pl##.footer:style(background:#1b1b1d !important; box-shadow:none !important)
+polsatnews.pl##.add-popup:style(background:#1b1b1d !important; box-shadow:none !important)
+polsatnews.pl##.header__main:style(border-bottom:1px solid #3a3a3f !important)
+polsatnews.pl##.overflow-menu__box:style(background-color:#26262a !important)
+polsatnews.pl##.ad__holder .ad__space:style(background-color:#26262a !important)
+polsatnews.pl##.button:disabled:style(background-color:#26262a !important)
+polsatnews.pl##.button[aria-disabled=true]:style(background-color:#26262a !important)
+polsatnews.pl##.search-form__input:style(background:#1b1b1d !important; -webkit-box-shadow:inset 0 0 0 50px #1b1b1d !important; color:#e4e4e6 !important)
+polsatnews.pl##.search-form__input::placeholder:style(color:#e4e4e6 !important)
+
+! --- Borders ---
+polsatnews.pl##.section__header:style(border-color:#3a3a3f !important)
+polsatnews.pl##.tabs__nav:before:style(border-color:#3a3a3f !important)
+polsatnews.pl##.footer__links--top:style(border-color:#3a3a3f !important)
+polsatnews.pl##.footer__info:style(border-color:#3a3a3f !important)
+polsatnews.pl##.news--target .news__figure-signature:style(border-color:#3a3a3f !important)
+polsatnews.pl##.button:style(border-color:#3a3a3f !important)
+polsatnews.pl##.search__form:style(border-color:#3a3a3f !important)
+polsatnews.pl##.tabs__nav:before:style(background:#3a3a3f !important)
+
+! --- Text: navigation, sections, tabs, footer ---
+polsatnews.pl##.nav--main .nav__link:style(color:#e4e4e6 !important)
+polsatnews.pl##.nav--section .nav__link:style(color:#e4e4e6 !important)
+polsatnews.pl##.nav--footer .nav__link:style(color:#e4e4e6 !important)
+polsatnews.pl##.nav--search .nav__link:style(color:#e4e4e6 !important)
+polsatnews.pl##.nav--sub .overflow-menu__box .nav__link:style(color:#e4e4e6 !important)
+polsatnews.pl##.section__link:style(color:#e4e4e6 !important)
+polsatnews.pl##.section__title:style(color:#e4e4e6 !important)
+polsatnews.pl##.tabs__name:style(color:#e4e4e6 !important)
+polsatnews.pl##.tabs__link:style(color:#e4e4e6 !important)
+polsatnews.pl##.tabs__title:style(color:#e4e4e6 !important)
+polsatnews.pl##.breadcrumb:style(color:#e4e4e6 !important)
+polsatnews.pl##.button:style(color:#e4e4e6 !important)
+polsatnews.pl##.header__hamburger:style(color:#e4e4e6 !important)
+polsatnews.pl##.search__info-no-results:style(color:#e4e4e6 !important)
+polsatnews.pl##.footer__links span:style(color:#e4e4e6 !important)
+polsatnews.pl##.weather-box__container:style(color:#e4e4e6 !important)
+polsatnews.pl##.weather-box__city-name:style(color:#e4e4e6 !important)
+polsatnews.pl##.weather-box__temp:style(color:#e4e4e6 !important)
+polsatnews.pl##.platform__text:style(color:#a3a3a9 !important)
+polsatnews.pl##.weather-box__air:style(color:#a3a3a9 !important)
+polsatnews.pl##.footer__links a:style(color:#a3a3a9 !important)
+polsatnews.pl##.footer__info:style(color:#a3a3a9 !important)
+polsatnews.pl##.breadcrumb__item:not(:last-child):style(color:#a3a3a9 !important)
+polsatnews.pl##.search__info:style(color:#a3a3a9 !important)
+polsatnews.pl##.search__info-text:style(color:#a3a3a9 !important)
+polsatnews.pl##.polling__msg:style(color:#a3a3a9 !important)
+
+! --- Icons that are dark (hamburger, search, close) ---
+polsatnews.pl##.header__hamburger:after:style(filter:invert(1) brightness(1.5) !important)
+polsatnews.pl##.search-form__button:after:style(filter:invert(1) brightness(1.5) !important)
+polsatnews.pl##.weather-box__arrow:after:style(filter:invert(1) brightness(1.5) !important)
+polsatnews.pl##.weather-box__arrow:before:style(filter:invert(1) brightness(1.5) !important)
+
+! --- Header icons (contrast toggle, mail) and arrows in buttons ---
+polsatnews.pl##.contrast-toggle:style(filter:invert(1) hue-rotate(180deg) !important)
+polsatnews.pl##.mail-link:style(filter:invert(1) hue-rotate(180deg) !important)
+polsatnews.pl##.button:not(.button--fill).button--arrow-right:after:style(filter:invert(1) !important)
+polsatnews.pl##.button:not(.button--fill).button--arrow-left:before:style(filter:invert(1) !important)
+
+! --- Air quality widget is a cross-origin iframe (widget.twojapogoda.pl), can only be inverted from outside ---
+polsatnews.pl##.embed--weather .embed__iframe:style(filter:invert(1) hue-rotate(180deg) !important)
+
+! --- Article lists (NOT the sliders and NOT .news--over, those use a white text on image) ---
+polsatnews.pl##.news-list:not(.news-list--hot-news-bg) .news:not(.news--over) .news__header:style(color:#e4e4e6 !important)
+polsatnews.pl##.news-list:not(.news-list--hot-news-bg) .news:not(.news--over) .news__title:style(color:#e4e4e6 !important)
+polsatnews.pl##.news-list:not(.news-list--hot-news-bg) .news:not(.news--over) .news__link:style(color:#e4e4e6 !important)
+polsatnews.pl##.news--target .news__header:style(color:#e4e4e6 !important)
+polsatnews.pl##.news:not(.news--over) .news__info:style(color:#a3a3a9 !important)
+polsatnews.pl##.news:not(.news--over) .news__time:style(color:#a3a3a9 !important)
+polsatnews.pl##.news:not(.news--over) .news__editor:style(color:#a3a3a9 !important)
+polsatnews.pl##.news--target .news__author:style(color:#a3a3a9 !important)
+polsatnews.pl##.news:not(.news--over) .news__category:style(color:#5bbcf0 !important)
+polsatnews.pl##.news:not(.news--over) a.news__category:style(color:#5bbcf0 !important)
+polsatnews.pl##a:not([class]):style(color:#5bbcf0 !important)
+
+! --- Image placeholders (before lazy load) ---
+polsatnews.pl##.news__figure:style(background:#26262a !important)
+polsatnews.pl##.tabs__figure:style(background:#26262a !important)
+polsatnews.pl##.report__figure:style(background:#26262a !important)
+polsatnews.pl##.sent__figure:style(background:#26262a !important)
+polsatnews.pl##.polling__media:style(background:#26262a !important)
+polsatnews.pl##.polling-new__media:style(background:#26262a !important)
+polsatnews.pl##.news-list--programs .news__avatar:style(background:#26262a !important)
+
+! --- Images: dim them a bit so they do not glow on a dark page ---
+polsatnews.pl##.news__img:style(filter:brightness(.82) contrast(1.05) !important; transition:filter .2s !important)
+polsatnews.pl##.tabs__img:style(filter:brightness(.82) contrast(1.05) !important; transition:filter .2s !important)
+polsatnews.pl##.report__img:style(filter:brightness(.82) contrast(1.05) !important; transition:filter .2s !important)
+polsatnews.pl##.sent__img:style(filter:brightness(.82) contrast(1.05) !important; transition:filter .2s !important)
+polsatnews.pl##.news__avatar:style(filter:brightness(.82) contrast(1.05) !important; transition:filter .2s !important)
+polsatnews.pl##.polling__img:style(filter:brightness(.82) contrast(1.05) !important; transition:filter .2s !important)
+polsatnews.pl##.polling-new__img:style(filter:brightness(.82) contrast(1.05) !important; transition:filter .2s !important)
+polsatnews.pl##.news__link:hover .news__img:style(filter:brightness(1) contrast(1) !important)
+polsatnews.pl##.tabs__link:hover .tabs__img:style(filter:brightness(1) contrast(1) !important)
+polsatnews.pl##.report__link:hover .report__img:style(filter:brightness(1) contrast(1) !important)
+
+! --- Image shading under text (gradient in news__header:before) - darker, so the white text stays readable ---
+polsatnews.pl##.news--over .news__header:before:style(background:linear-gradient(180deg, transparent, rgba(0,0,0,.55) 32%, rgba(0,0,0,.92)) !important)
+polsatnews.pl##.news-list--recent-video .news:first-child .news__header:before:style(background:linear-gradient(180deg, transparent, rgba(0,0,0,.55) 32%, rgba(0,0,0,.92)) !important)
+polsatnews.pl##.news-list--hot-news-1 .news--over .news__header:before:style(background:linear-gradient(270deg, transparent, rgba(0,0,0,.55) 32%, rgba(0,0,0,.92)) !important)
+polsatnews.pl##.report__header:before:style(background:linear-gradient(180deg, transparent, rgba(0,0,0,.55) 32%, rgba(0,0,0,.92)) !important)
+polsatnews.pl##.polling__media+.polling__title:before:style(background:linear-gradient(180deg, transparent, rgba(0,0,0,.55) 32%, rgba(0,0,0,.92)) !important)
+
+! --- Slider (#sg_slider / .news-list--hot-news-bg): darker backgrounds, white text ---
+! NOTE: text on the tiles (.news--over) is color:#000 + filter:invert(1) on the site. Do NOT set color on it.
+polsatnews.pl##.news-list--hot-news-bg-1:style(background:#0a2a3d !important)
+polsatnews.pl##.news-list--hot-news-bg-2:style(background:#5e0d18 !important)
+polsatnews.pl##.news-list--hot-news-bg-3:style(background:#3a3200 !important; color:#fff !important)
+polsatnews.pl##.news-list--hot-news-bg-4:style(background:#1b1b1d !important)
+polsatnews.pl##.news-list--hot-news-bg-5:style(background:#000 !important)
+polsatnews.pl##.news-list--hot-news-bg .news:not(.news--over) .news__header:style(color:#fff !important)
+polsatnews.pl##.news-list--hot-news-bg .news:not(.news--over) .news__title:style(color:#fff !important)
+polsatnews.pl##.news-list--hot-news-bg .news:not(.news--over) .news__link:style(color:#fff !important)
+polsatnews.pl##.news-list--hot-news-bg .news:not(.news--over) .news__preview:style(color:#fff !important)
+polsatnews.pl##.news-list--hot-news-bg .news-list__title:style(color:#fff !important)
+polsatnews.pl##.news-list--hot-news-bg .news:not(.news--over) .news__info:style(color:#c9d3da !important)
+polsatnews.pl##.news-list--hot-news-bg .news:not(.news--over) .news__time:style(color:#c9d3da !important)
+polsatnews.pl##.news-list--hot-news-bg .news:not(.news--over) .news__category:style(color:#c9d3da !important)
+
+! --- Section with the sidebar (Najnowsze / Popularne) ---
+polsatnews.pl##.tabs__item:style(color:#a3a3a9 !important)
+polsatnews.pl##.tabs__box:after:style(background:linear-gradient(180deg, rgba(27,27,29,0), #1b1b1d) !important)
+
+! --- Other widgets (poll, weather, sent) ---
+polsatnews.pl##.polling__title:style(color:#e4e4e6 !important)
+polsatnews.pl##.polling__answer-media-label:style(color:#e4e4e6 !important)
+polsatnews.pl##.polling-new__answer-media-label:style(color:#e4e4e6 !important)
+polsatnews.pl##.platform-banner:style(background:#2a1217 !important)
+polsatnews.pl##.platform-banner__headline2:style(color:#e4e4e6 !important)
+polsatnews.pl##.platform-banner__subline:style(color:#e4e4e6 !important)
+
+! --- Logo: slightly brighter ---
+polsatnews.pl##.logo__img:style(filter:brightness(1.35) saturate(1.1) !important)

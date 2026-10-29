@@ -1,0 +1,48 @@
+name: Build combined filter list
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "lists/**"
+      - "sources.txt"
+      - "header.txt"
+      - "scripts/**"
+      - ".github/workflows/build.yml"
+  # Refresh remote sources even when nothing changed in this repo.
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# One build at a time, so two runs never push over each other.
+concurrency:
+  group: build-combined
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - name: Build combined list
+        run: python3 scripts/build.py --sources sources.txt --header header.txt --out dist/combined.txt
+
+      - name: Commit the list if it changed
+        run: |
+          if [ -z "$(git status --porcelain -- dist/combined.txt)" ]; then
+            echo "dist/combined.txt is up to date"
+            exit 0
+          fi
+          git add dist/combined.txt
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "chore: rebuild combined filter list"
+          git pull --rebase
+          git push
