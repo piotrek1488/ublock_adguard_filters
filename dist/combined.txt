@@ -544,6 +544,38 @@ olx.pl###onetrust-pc-sdk .ot-always-active:style(color: #8FB0FF !important)
 ! Remove these two lines to keep promoted cards.
 olx.pl##[data-testid="l-card"]:has(a[href*="search_reason=search%7Cpromoted"])
 olx.pl##[data-testid="l-card"]:has(a[href*="search_reason=search|promoted"])
+! ---- source: lists/allegro_darkmode.txt ----
+! Allegro dark mode for uBlock Origin (allegro.pl)
+!
+! Design
+!  Allegro paints its UI through the "metrum" design-system color tokens
+!  (--m-color-*), defined on the page and switched to dark by an extra sheet
+!  metrum-core/metrum-dark-theme-*.m.css that Allegro only loads AFTER the user
+!  picks "motyw urządzenia" (DEVICE) in the display-settings modal, and only
+!  inside @media (prefers-color-scheme: dark). That dark sheet re-defines the
+!  semantic tokens on .ceolg5 (a class present on <body>) / .opbox-fragment.
+!  This list re-defines the SAME tokens unconditionally on :root and body, so
+!  the dark palette applies regardless of the account/preference setting and
+!  before paint (token overrides apply early -> no flash, nothing reverts).
+!  Values below are Allegro's own dark values, resolved to concrete colors from
+!  metrum-core (base palette + opacity) overlaid with the dark theme sheet.
+!  No :matches-css() is used (same reasoning as the OLX list).
+! Palette follows Allegro dark: black/charcoal surfaces (#000 / #222 / #2e2e2e),
+! near-white text, orange accent #ff5a00, teal secondary.
+!
+! NOTE: this only re-colors token-driven surfaces/text/borders/accents. Some
+! components hard-code colors or use SVG/raster assets; add targeted :style()
+! hooks below as you spot leftovers (same approach as olx_darkmode.txt).
+! ==== 1. Metrum dark theme tokens (the whole palette, one declaration) ====
+allegro.pl##:root:style(color-scheme: dark !important; --m-color-accent-on-secondary: #fff !important; --m-color-accent-primary: #ff5a00 !important; --m-color-accent-primary-rgb: 255,90,0 !important; --m-color-accent-secondary: #2ab9a3 !important; --m-color-accent-secondary-rgb: 42,185,163 !important; --m-color-accent-tertiary: #2ab9a3 !important; --m-color-accent-tertiary-visited: #4294c6 !important; --m-color-active: rgba(255,255,255,.3) !important; --m-color-bar: #232f35 !important; --m-color-bg-carousel-surface: #0d1e28 !important; --m-color-bg-elevation: #2e2e2e !important; --m-color-bg-secondary: #a0a0a0 !important; --m-color-bubble-admin: #222 !important; --m-color-bubble-dark: #1a3b4f !important; --m-color-bubble-light: #444 !important; --m-color-bubble-light-border: #444 !important; --m-color-bubble-pending: #0d1e28 !important; --m-color-bubble-pending-color: #285977 !important; --m-color-decoration-primary: #aaa !important; --m-color-decoration-secondary: #aaa !important; --m-color-decoration-tertiary: rgba(255,255,255,0.26) !important; --m-color-delivery-prediction-fast: #43c649 !important; --m-color-delivery-prediction-long: #fac314 !important; --m-color-delivery-prediction-xmas: #ec736d !important; --m-color-featured-background-blue: #62a6d1 !important; --m-color-featured-background-green: #43c649 !important; --m-color-featured-background-purple: #62a6d1 !important; --m-color-featured-background-yellow: #fbcf40 !important; --m-color-featured-text-blue: #62a6d1 !important; --m-color-featured-text-green: #43c649 !important; --m-color-featured-text-purple: #62a6d1 !important; --m-color-featured-text-yellow: #fbcf40 !important; --m-color-highlight: rgba(255,255,255,.2) !important; --m-color-icon-filter: brightness(3) brightness(.667) !important; --m-color-icon-filter-disabled: brightness(3) opacity(0.38) !important; --m-color-link-filter: brightness(0) saturate(100%) invert(66%) sepia(17%) saturate(1639%) hue-rotate(121deg) brightness(90%) contrast(85%) !important; --m-color-link-filter-hover: brightness(0) saturate(100%) invert(34%) sepia(70%) saturate(5757%) hue-rotate(159deg) brightness(91%) contrast(107%) !important; --m-color-link-filter-icon: brightness(0) invert(1) !important; --m-color-message-light: #444 !important; --m-color-message-shadow: rgba(0,0,0,0.8) !important; --m-color-message-tip: #2e3e46 !important; --m-color-neutral-background: #000 !important; --m-color-neutral-border: rgba(255,255,255,0.7) !important; --m-color-neutral-border-muted: rgba(255,255,255,0.12) !important; --m-color-neutral-on-surface: #fff !important; --m-color-neutral-on-surface-primary: rgba(255,255,255,1) !important; --m-color-neutral-on-surface-primary-inverted: rgba(0,0,0,1) !important; --m-color-neutral-on-surface-rgb: 255,255,255 !important; --m-color-neutral-on-surface-secondary: rgba(255,255,255,0.7) !important; --m-color-neutral-surface: #222 !important; --m-color-neutral-surface-container: #444 !important; --m-color-neutral-surface-muted: rgba(255,255,255,0.12) !important; --m-color-neutral-surface-rgb: 34,34,34 !important; --m-color-neutral-surface-variant: rgba(34,34,34,0) !important; --m-color-placeholder-filter: brightness(3) opacity(0.38) !important; --m-color-price: #fff !important; --m-color-price-bargain: #169a23 !important; --m-color-progress: #2e2e2e !important; --m-color-semitransparent: rgba(0,0,0,.4) !important; --m-color-semitransparent-dark: rgba(0,0,0,0.8) !important; --m-color-shadow: transparent !important; --m-color-shadow-elevation: rgba(0,0,0,0.16) !important; --m-color-state-disabled: rgba(255,255,255,0.42) !important; --m-color-state-on-surface-primary-focus: rgba(255,255,255,1) !important; --m-color-state-on-surface-primary-hover: rgba(255,255,255,0.7) !important; --m-color-state-on-surface-secondary-hover: rgba(255,255,255,0.8) !important; --m-color-state-overlay-disabled: rgba(255,255,255,0.12) !important; --m-color-state-overlay-on-surface-secondary-pressed: rgba(255,255,255,0.12) !important; --m-color-state-overlay-secondary-pressed: rgba(42,185,163,0.12) !important; --m-color-state-tertiary-enabled: #2ab9a3 !important; --m-color-status-error: #e64a44 !important; --m-color-status-info: #62a6d1 !important; --m-color-status-success: #43c649 !important; --m-color-status-warning: #fbcf40 !important; --m-color-table-zebra: #121212 !important)
+allegro.pl##body:style(--m-color-accent-on-secondary: #fff !important; --m-color-accent-primary: #ff5a00 !important; --m-color-accent-primary-rgb: 255,90,0 !important; --m-color-accent-secondary: #2ab9a3 !important; --m-color-accent-secondary-rgb: 42,185,163 !important; --m-color-accent-tertiary: #2ab9a3 !important; --m-color-accent-tertiary-visited: #4294c6 !important; --m-color-active: rgba(255,255,255,.3) !important; --m-color-bar: #232f35 !important; --m-color-bg-carousel-surface: #0d1e28 !important; --m-color-bg-elevation: #2e2e2e !important; --m-color-bg-secondary: #a0a0a0 !important; --m-color-bubble-admin: #222 !important; --m-color-bubble-dark: #1a3b4f !important; --m-color-bubble-light: #444 !important; --m-color-bubble-light-border: #444 !important; --m-color-bubble-pending: #0d1e28 !important; --m-color-bubble-pending-color: #285977 !important; --m-color-decoration-primary: #aaa !important; --m-color-decoration-secondary: #aaa !important; --m-color-decoration-tertiary: rgba(255,255,255,0.26) !important; --m-color-delivery-prediction-fast: #43c649 !important; --m-color-delivery-prediction-long: #fac314 !important; --m-color-delivery-prediction-xmas: #ec736d !important; --m-color-featured-background-blue: #62a6d1 !important; --m-color-featured-background-green: #43c649 !important; --m-color-featured-background-purple: #62a6d1 !important; --m-color-featured-background-yellow: #fbcf40 !important; --m-color-featured-text-blue: #62a6d1 !important; --m-color-featured-text-green: #43c649 !important; --m-color-featured-text-purple: #62a6d1 !important; --m-color-featured-text-yellow: #fbcf40 !important; --m-color-highlight: rgba(255,255,255,.2) !important; --m-color-icon-filter: brightness(3) brightness(.667) !important; --m-color-icon-filter-disabled: brightness(3) opacity(0.38) !important; --m-color-link-filter: brightness(0) saturate(100%) invert(66%) sepia(17%) saturate(1639%) hue-rotate(121deg) brightness(90%) contrast(85%) !important; --m-color-link-filter-hover: brightness(0) saturate(100%) invert(34%) sepia(70%) saturate(5757%) hue-rotate(159deg) brightness(91%) contrast(107%) !important; --m-color-link-filter-icon: brightness(0) invert(1) !important; --m-color-message-light: #444 !important; --m-color-message-shadow: rgba(0,0,0,0.8) !important; --m-color-message-tip: #2e3e46 !important; --m-color-neutral-background: #000 !important; --m-color-neutral-border: rgba(255,255,255,0.7) !important; --m-color-neutral-border-muted: rgba(255,255,255,0.12) !important; --m-color-neutral-on-surface: #fff !important; --m-color-neutral-on-surface-primary: rgba(255,255,255,1) !important; --m-color-neutral-on-surface-primary-inverted: rgba(0,0,0,1) !important; --m-color-neutral-on-surface-rgb: 255,255,255 !important; --m-color-neutral-on-surface-secondary: rgba(255,255,255,0.7) !important; --m-color-neutral-surface: #222 !important; --m-color-neutral-surface-container: #444 !important; --m-color-neutral-surface-muted: rgba(255,255,255,0.12) !important; --m-color-neutral-surface-rgb: 34,34,34 !important; --m-color-neutral-surface-variant: rgba(34,34,34,0) !important; --m-color-placeholder-filter: brightness(3) opacity(0.38) !important; --m-color-price: #fff !important; --m-color-price-bargain: #169a23 !important; --m-color-progress: #2e2e2e !important; --m-color-semitransparent: rgba(0,0,0,.4) !important; --m-color-semitransparent-dark: rgba(0,0,0,0.8) !important; --m-color-shadow: transparent !important; --m-color-shadow-elevation: rgba(0,0,0,0.16) !important; --m-color-state-disabled: rgba(255,255,255,0.42) !important; --m-color-state-on-surface-primary-focus: rgba(255,255,255,1) !important; --m-color-state-on-surface-primary-hover: rgba(255,255,255,0.7) !important; --m-color-state-on-surface-secondary-hover: rgba(255,255,255,0.8) !important; --m-color-state-overlay-disabled: rgba(255,255,255,0.12) !important; --m-color-state-overlay-on-surface-secondary-pressed: rgba(255,255,255,0.12) !important; --m-color-state-overlay-secondary-pressed: rgba(42,185,163,0.12) !important; --m-color-state-tertiary-enabled: #2ab9a3 !important; --m-color-status-error: #e64a44 !important; --m-color-status-info: #62a6d1 !important; --m-color-status-success: #43c649 !important; --m-color-status-warning: #fbcf40 !important; --m-color-table-zebra: #121212 !important)
+allegro.pl##.ceolg5:style(--m-color-accent-on-secondary: #fff !important; --m-color-accent-primary: #ff5a00 !important; --m-color-accent-primary-rgb: 255,90,0 !important; --m-color-accent-secondary: #2ab9a3 !important; --m-color-accent-secondary-rgb: 42,185,163 !important; --m-color-accent-tertiary: #2ab9a3 !important; --m-color-accent-tertiary-visited: #4294c6 !important; --m-color-active: rgba(255,255,255,.3) !important; --m-color-bar: #232f35 !important; --m-color-bg-carousel-surface: #0d1e28 !important; --m-color-bg-elevation: #2e2e2e !important; --m-color-bg-secondary: #a0a0a0 !important; --m-color-bubble-admin: #222 !important; --m-color-bubble-dark: #1a3b4f !important; --m-color-bubble-light: #444 !important; --m-color-bubble-light-border: #444 !important; --m-color-bubble-pending: #0d1e28 !important; --m-color-bubble-pending-color: #285977 !important; --m-color-decoration-primary: #aaa !important; --m-color-decoration-secondary: #aaa !important; --m-color-decoration-tertiary: rgba(255,255,255,0.26) !important; --m-color-delivery-prediction-fast: #43c649 !important; --m-color-delivery-prediction-long: #fac314 !important; --m-color-delivery-prediction-xmas: #ec736d !important; --m-color-featured-background-blue: #62a6d1 !important; --m-color-featured-background-green: #43c649 !important; --m-color-featured-background-purple: #62a6d1 !important; --m-color-featured-background-yellow: #fbcf40 !important; --m-color-featured-text-blue: #62a6d1 !important; --m-color-featured-text-green: #43c649 !important; --m-color-featured-text-purple: #62a6d1 !important; --m-color-featured-text-yellow: #fbcf40 !important; --m-color-highlight: rgba(255,255,255,.2) !important; --m-color-icon-filter: brightness(3) brightness(.667) !important; --m-color-icon-filter-disabled: brightness(3) opacity(0.38) !important; --m-color-link-filter: brightness(0) saturate(100%) invert(66%) sepia(17%) saturate(1639%) hue-rotate(121deg) brightness(90%) contrast(85%) !important; --m-color-link-filter-hover: brightness(0) saturate(100%) invert(34%) sepia(70%) saturate(5757%) hue-rotate(159deg) brightness(91%) contrast(107%) !important; --m-color-link-filter-icon: brightness(0) invert(1) !important; --m-color-message-light: #444 !important; --m-color-message-shadow: rgba(0,0,0,0.8) !important; --m-color-message-tip: #2e3e46 !important; --m-color-neutral-background: #000 !important; --m-color-neutral-border: rgba(255,255,255,0.7) !important; --m-color-neutral-border-muted: rgba(255,255,255,0.12) !important; --m-color-neutral-on-surface: #fff !important; --m-color-neutral-on-surface-primary: rgba(255,255,255,1) !important; --m-color-neutral-on-surface-primary-inverted: rgba(0,0,0,1) !important; --m-color-neutral-on-surface-rgb: 255,255,255 !important; --m-color-neutral-on-surface-secondary: rgba(255,255,255,0.7) !important; --m-color-neutral-surface: #222 !important; --m-color-neutral-surface-container: #444 !important; --m-color-neutral-surface-muted: rgba(255,255,255,0.12) !important; --m-color-neutral-surface-rgb: 34,34,34 !important; --m-color-neutral-surface-variant: rgba(34,34,34,0) !important; --m-color-placeholder-filter: brightness(3) opacity(0.38) !important; --m-color-price: #fff !important; --m-color-price-bargain: #169a23 !important; --m-color-progress: #2e2e2e !important; --m-color-semitransparent: rgba(0,0,0,.4) !important; --m-color-semitransparent-dark: rgba(0,0,0,0.8) !important; --m-color-shadow: transparent !important; --m-color-shadow-elevation: rgba(0,0,0,0.16) !important; --m-color-state-disabled: rgba(255,255,255,0.42) !important; --m-color-state-on-surface-primary-focus: rgba(255,255,255,1) !important; --m-color-state-on-surface-primary-hover: rgba(255,255,255,0.7) !important; --m-color-state-on-surface-secondary-hover: rgba(255,255,255,0.8) !important; --m-color-state-overlay-disabled: rgba(255,255,255,0.12) !important; --m-color-state-overlay-on-surface-secondary-pressed: rgba(255,255,255,0.12) !important; --m-color-state-overlay-secondary-pressed: rgba(42,185,163,0.12) !important; --m-color-state-tertiary-enabled: #2ab9a3 !important; --m-color-status-error: #e64a44 !important; --m-color-status-info: #62a6d1 !important; --m-color-status-success: #43c649 !important; --m-color-status-warning: #fbcf40 !important; --m-color-table-zebra: #121212 !important)
+! ==== 2. Page background / html (hard structural surfaces) ====
+allegro.pl##html:style(background-color: #000 !important)
+allegro.pl##body:style(background-color: #000 !important; color: #fff !important)
+! ==== 3. Leftovers to tune by hand (examples, extend as needed) ====
+! Carousel/nav arrows and dark SVG icons usually need an invert filter.
+! allegro.pl##[class*="swiper-button"]:style(filter: invert(1) !important)
 ! ---- source: https://raw.githubusercontent.com/PolishFiltersTeam/PolishAnnoyanceFilters/master/PPB.txt ----
 ! Polish Annoyance Filters
 ! Codename: Annoyance - Main
@@ -36791,417 +36823,6 @@ open.fm#@#+js(set-constant, Object.prototype.gafSlot, undefined)
 !
 parenting.pl#@#[src^="https://v.wpimg.pl/"]:not([alt],[class="contentstream-cover"]):upward(3):not(html,body)
 !#endif
-! ---- source: https://raw.githubusercontent.com/CrusheerPL/AlleBlockV2/master/AlleBlockV2.txt ----
-! Date: 2026/11/01
-! Aktualizowana na bieżąco lista filtrów dla uBO/AdGuard mająca na celu zwiększenie komfortu korzystania z platform Allegro, OLX i innych poprzez ukrycie lub dezaktywację elementów zbędnych bądź irytujących.
-! [EN] NOTE: If you see any elements which should be hidden or blocked, or something does not work, please report it there: https://github.com/CrusheerPL/AlleBlockV2/issues
-! [PL] UWAGA: Jeśli zauważysz element(y), które powinny zostać ukryte, bądź gdy poniższe filtry nie działają poprawnie, daj znać na GitHubie: https://github.com/CrusheerPL/AlleBlockV2/issues
-! To be cleaned up from non-effective rules.
-! Allegro PL/CZ/SK/HU
-! Main
-allegro.cz##div[data-box-name="Top header background"]
-allegro.pl##div[data-box-name="HP Redesign Content"]
-allegro.cz,allegro.sk,allegro.hu##div[data-box-name="HP International Content"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-box-name="metrum-footer-partial-expander"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-box-name="promoted.links.grid.container"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-box-name="f-social"]
-allegro.pl,allegro.cz,allegro.sk##div[data-box-name^="Topbanner_"]
-allegro.hu##div[data-box-name="mallAttentioner"]
-allegro.pl##div[data-box-name$="desktop-nav-links"]
-allegro.pl##div[data-group-id="header-layers-desktop_eBilet.pl"]
-allegro.pl##a[href^="/kampania"]
-allegro.hu##a[href*="/kampan"]
-allegro.pl##div[data-box-name="cart.empty.carousel"]
-allegro.sk,allegro.hu##div[data-box-name="Top header background"]
-! Login + register
-allegro.pl###chat-container
-! Search bar
-allegro.pl###suggestions-listbox > a[href^="https://allegro.pl/dss-proxy/clicks?emission_unit_id="]
-allegro.pl###suggestions-listbox > a[href$="&ref=suggest"]
-allegro.pl###suggestions-listbox > a[href^="/marka/"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div#suggestions-listbox > div[data-role="carousel-component"]
-! Full-screen surveys
-allegro.cz,allegro.sk##div[data-box-name^="allegro.modal"]:has(div[data-box-name="allegro.survey"])
-! Categories - PL
-! General
-allegro.pl##div[data-box-name="allegro.navigation.layers.row2.column4"]
-allegro.pl##div[data-box-name="layout.container.row2.column"]
-! TODO: strony działów są całkowicie ukryte, powinny być tylko odnośniki do podkategorii
-allegro.pl##div[data-box-name="structure-container"]
-allegro.pl##div[data-box-name="rankingi"]
-allegro.pl##div[data-role="BRANDS_SECTION"]
-allegro.pl##div[data-box-name="Showcase"]
-allegro.pl##div[data-box-name*="showcase"]
-allegro.pl##div[data-box-name*="Promoted"]
-allegro.pl##div[data-box-name*="SEO"]
-allegro.pl##div[data-box-name^="PL - Additional"]
-! Nieruchomości
-allegro.pl##div[data-box-name="SHOWCASE NIERUCHOMOSCI"]
-allegro.pl##div[data-box-name="PROMOWANE_OGŁOSZENIA"]
-allegro.pl##div[data-box-name="DOBIERARKA NIERUCHOMOSCI SG"]
-! Moda, Uroda
-allegro.pl##div[data-box-name="Marki"]
-allegro.pl##div[data-box-name^="Articles"]
-allegro.pl##div[data-box-name^="korzyści z licytacji"]
-allegro.pl##div[data-box-name^="Lista marek"]
-allegro.pl##div[data-box-name*="polecane"]
-allegro.pl##div[data-box-name="kontener z tagiem analitycznym"]
-allegro.pl##a[href$="/marki"]
-allegro.pl##div[data-box-name="Oferta-oficjalnych-sklepow.image.container"]
-allegro.pl##div[data-box-name="Fall-Oferta-oficjalnych-sklepow.carousels"]
-! Motoryzacja > Ogłoszenia motoryzacyjne
-allegro.pl##div[data-box-name^="Baner"]
-allegro.pl##div[data-box-name^="baner"]
-allegro.pl##div:has(> div[data-box-name$="KARUZELA"])
-allegro.pl##div:has(> div[data-box-name$="OFERTA_DNIA"])
-allegro.pl##div[data-box-name="karuzela motocykle"]
-allegro.pl##div[data-box-name="cenniki"]
-allegro.pl##div[data-box-name="Promowane na dziale ogłoszeń"]
-allegro.pl##div[data-box-name="Samochody osobowe- Nadwozia"]
-allegro.pl##div[data-box-name="LP Ogłoszenia - motocykle"]
-allegro.pl##div[data-box-name*="marki"]
-allegro.pl##div[data-box-name="Wideo"]
-allegro.pl##div[data-box-name^="najnowsze artykuly"]
-allegro.pl##div[data-box-name="inspiracje motoryzacji"]
-allegro.pl##div[data-box-name="Linki wewnętrzne"]
-allegro.pl##div[data-box-name="INFO"]
-allegro.pl##div[data-box-name="Programy aut używanych"]
-! Motoryzacja > Opony
-allegro.pl##div[data-box-name^="TABS-OPONY"]
-allegro.pl##div[data-box-name="Opony całoroczne"]
-allegro.pl##div[data-box-name^="STREFA MAREK"]
-allegro.pl##div[data-box-name^="Strefa Marek"]
-allegro.pl##div[data-box-name^="Testy Opon"]
-allegro.pl##div[data-box-name^="Artykuły opon"]
-allegro.pl##div[data-box-name^="Płytki inspiracji"]
-allegro.pl##div[data-box-name="Felgi w najlepszej cenie"]
-allegro.pl##div[data-box-name="Felgi aluminiowe"]
-allegro.pl##div[data-box-name="Felgi stalowe"]
-allegro.pl##div[data-box-name="Kompletne Koła"]
-allegro.pl##div[data-box-name="Kolpaki"]
-allegro.pl##div[data-box-name^="Chemia"]
-allegro.pl##div[data-box-name="Bezpieczenstwo"]
-! Motoryzacja > Strefa motocykli
-allegro.pl##div[data-box-name^="Rekomendacje"]
-allegro.pl##div[data-box-name="Motocykle-czesci"]
-allegro.pl##div[data-box-name="Czesci"]
-allegro.pl##div[data-box-name="Bagaż motocyklowy"]
-allegro.pl##div[data-box-name="Kaski motocyklowe"]
-allegro.pl##div[data-box-name="motocykle1"]
-allegro.pl##div[data-box-name="Odzież motocyklowa"]
-allegro.pl##div[data-box-name="Motocykle-i-quady"]
-allegro.pl##div[data-box-name="Artykuly"]
-allegro.pl##div[data-box-name="Struktura Motocfyklowa"]
-! Motoryzacja > Strefa maszyn
-allegro.pl##div[data-box-name="maszyny rolnicze"]
-allegro.pl##div[data-box-name="maszyny budowlane"]
-allegro.pl##div[data-box-name*="przemyslowe"]
-allegro.pl##div[data-box-name="Przyczepy i naczepy"]
-allegro.pl##div[data-box-name="Inne_pojazdy"]
-allegro.pl##div[data-box-name="ogłoszenia"]:has(h2:has-text("Maszyny dla profesjonalistów"))
-! Categories - other markets
-allegro.pl,allegro.cz,allegro.sk##div[data-box-name="allegro.navigation.layers.brands.container"]
-allegro.cz,allegro.sk##div[data-box-name="allegro-days-container"]
-allegro.cz,allegro.sk##div[data-box-name="allegro-days-allediscount-container"]
-allegro.cz,allegro.sk,allegro.hu,archiwum.allegro.pl##div[data-box-name="lazy"]:not(:has(div[data-box-name="popularCategories"]))
-allegro.cz,allegro.sk##div[data-box-name="ads-container"]
-allegro.cz,allegro.sk##div[data-box-name="best-price-guarantee-container"]
-allegro.cz,allegro.sk##div[data-box-name="section-banner-container"]
-allegro.cz##div[data-box-name="automated-discount-cz-container"]
-allegro.cz,allegro.sk,allegro.hu##div[data-box-name="ALLEGRO DAYS"]
-allegro.cz,allegro.sk,allegro.hu##div[data-box-name="DEFAULT"]
-allegro.cz,allegro.sk,allegro.hu##div[data-box-name="LAZY"]
-! Listings
-allegro.pl##div[data-box-name$="dynamicQueryNarrowing"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-role="edu-tip"]
-allegro.pl##div[data-box-name^="allegro.ads"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div.opbox-listing > div > div:not(:has(section))
-allegro.cz,allegro.sk##section[data-analytics-view-label="BestPriceGuaranteeBanner"]
-allegro.pl##div[data-box-name="didYouMean"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-box-name^="premium.with.dfp"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##article:has(a[href*="/events/clicks?emission_unit_id"])
-allegro.pl##div[data-box-name="seoLazyBelowFilters"]
-allegro.pl##div[data-box-name*="Ranking"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-box-name="rekomendacje"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-box-name="articles"]
-allegro.pl,allegro.cz##div[data-box-name="kategorie komplementarne kontener"]
-allegro.pl,allegro.cz##div[data-box-name="seo text container"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-box-name="podobne wyszukiwania kontener"]
-allegro.pl,allegro.cz,allegro.sk##div[data-box-name*="queryUnderstandingCarousel"]
-allegro.pl##div.opbox-listing > div > ul > li:not(:has(> article))
-allegro.pl##div[data-box-name="rekomendacje-lazy"]
-allegro.pl##div[data-box-name="AggregatedFiltersCategoryListing"]
-allegro.pl##div[data-box-name="popularne miasta mob"]
-! Empty search results
-allegro.pl,allegro.cz##div[data-box-name="categoriesSuggester.container"]
-allegro.pl,allegro.cz##div[data-box-name^="ESR_categories.suggester"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-box-name="ESR_alternatives.suggester"]
-allegro.pl,allegro.cz##div[data-box-name^="ESR_recommendation.container"]
-allegro.pl,allegro.cz##div[data-box-name^="ESR_articles.container"]
-! Sellers
-allegro.cz,allegro.sk,allegro.hu##div#sideBanner
-allegro.cz,allegro.sk##div#richText
-! Product page
-allegro.pl##div[data-box-name="similar products"]
-allegro.pl##div[data-box-name="similar offers"]
-! Offer page
-allegro.cz,allegro.sk,allegro.hu##div[data-box-name="allegro.sis.header"]
-allegro.pl,allegro.cz,allegro.sk##div[data-box-name^="Cobalt"]
-allegro.pl##div[data-box-name^="Cyan"]
-allegro.pl,allegro.cz,allegro.sk##div[data-box-name*="cyan"]
-allegro.cz,allegro.hu##div[data-box-name^="Eager"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-analytics-groups*="allegro.ads"]
-allegro.pl##div[data-box-name="Offer bundles"]
-allegro.pl##div[data-box-name="Seller Banner Container"]
-! allegro.pl##img[alt*="baner"]
-allegro.cz##img[alt*="banner"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-box-name^="reco.bottom.container"]
-allegro.pl,allegro.cz,allegro.sk##div[data-box-name^="offers_reco_same_seller_pixel"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div:has(> div > div > div[data-box-name*="Carousel_reco_same_seller container"])
-allegro.cz,allegro.sk,allegro.hu##div[data-box-name="Compatibility offers"]
-allegro.pl##div[data-box-name="allegro.oferta.carousel.container"]
-allegro.pl##div[data-box-name*="comparisonTable"]
-allegro.pl##div[data-box-name="Container Bottom"]
-allegro.pl##div[data-box-name="Bars"]
-allegro.pl##div[data-box-name="Automotive"]
-allegro.pl##div[data-box-name="infinite-feed.carousel.wrapper"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-box-name="Container Top PPC Offers"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-box-name="desk"][data-analytics-groups*="allegro.oferta.mweb"] > div > div > div > div > div > div:not([data-box-name])
-allegro.pl##div[data-box-name="forbidden categories"]
-allegro.pl,allegro.cz,allegro.sk,allegro.hu##div[data-box-name="caro"]
-allegro.cz,allegro.sk##main#main-content > div > div > div:has(h2:has-text(/[DĎ]alš[íi](?:e | )od:/))
-allegro.hu##main#main-content > div > div > div:has(h2:has-text(Egyéb a következőktől:))
-allegro.pl##div[data-box-name^="allegro.app.promotion."]
-allegro.pl##div[data-box-name="layout.container"][data-analytics-groups*="showproduct.content"] > div > div > div:not([data-box-name])
-allegro.pl##div[data-box-name="showproduct.content"] > div > div > div:not([data-box-name])
-allegro.pl,allegro.cz##main#main-content:not([data-box-name="listing"],[data-box-name="allegro.cart.view"]) > div > div > div:not([data-box-name])
-allegro.pl##div[data-box-name="infinite-feed.wrapper"]
-allegro.pl##div[data-box-name$="localeAndMarketplace"]
-! "Added to basket" popup
-allegro.pl##div[data-box-name="precart-recommendations"]
-! Opinions section
-allegro.pl##div[data-testid="featuresFilter"]
-! Sale ended
-allegro.pl##div[data-box-name="Container carousel reco ended"]
-allegro.pl##div[data-box-name="Layout"] > div > div > div:not([data-box-name])
-! Experimental - automatic description & parameters expansion (PL only for now)
-allegro.pl##+js(trusted-click-element,[data-box-name="Product Description Bar"] > div > div > #\:R1H1\:, , 1500)
-allegro.pl##+js(trusted-click-element,[data-box-name="Product Parameter Bar"] > div > div > #\:R1H1\:, , 1500)
-! Basket (other editions to be investigated)
-allegro.pl##div[data-box-name="cart.carousel"]
-! Thank you for your purchases
-! TODO: Allegro CZ/SK/HU - samples needed
-allegro.pl##div[data-box-name="allegro.transaction.thankyou.payment"] > div > div:nth-child(2) > div:not([data-box-name])
-allegro.pl,allegro.cz##div[data-box-name*="adblockDetector"]
-allegro.pl##div[data-box-name="marketing.consent.container"]
-allegro.pl##div[data-box-name*="allegro-pay-container"]
-allegro.pl##div[data-box-name="booster-mobile-container"]
-allegro.pl##div[data-box-name="reco-grid"]
-! err 404
-allegro.pl##div[data-box-name="new.error"] > div > div > div[data-box-name="verticals"]
-allegro.pl##div[data-box-name="new.error"] > div > div > div[data-box-name="article"]
-allegro.pl##div[data-box-name="new.error"] > div > div > div[data-box-name="Card"]
-! Visual fixes
-allegro.pl##div[data-box-name="allegro.navigation.scrollTop"]:style(margin-bottom: 30px !important)
-allegro.pl##div[data-box-name="NAWIGACJA"]:style(margin-bottom: 30px !important)
-allegro.pl##div[data-box-name="Container Parameters"]:style(margin-bottom: 30px !important)
-allegro.pl##div[data-box-name="lista-opony1m"] > div > div > a:remove-attr(style)
-allegro.pl##main[aria-label*="lubion"] > div > div:nth-of-type(3):style(margin-top: 16px !important)
-! ai slop
-allegro.pl##div[data-box-name^="allegro.chatbotAssistant"]
-allegro.pl##div.opbox-listing > div > ul > li:has(source[srcset*="artificial"])
-allegro.pl##div[data-testid="partial-optimization-content"]
-allegro.pl##div[data-testid="optimizer-content"]
-allegro.pl##div[data-box-name^="allegro.ai"]
-allegro.pl##div[data-box-name="Upsell Container"]
-allegro.pl##div[data-box-name^="allegro.ask.on.page.container"]
-allegro.pl##div[data-box-name^="ask on page - analytical pixel"]
-allegro.pl##div[data-analytics-view-label="mySmartManagerTopBanner"]
-! Others (to be categorized if possible)
-allegro.pl##div#recoSlotId
-! Scripts, trackers & resources (snippets from AlleBlock ver. 2021_ROLLING_LIVE by @maciejtarmas - CC BY-NC 4.0)
-! NOTE: original filters have not been updated for a long time, so proper operation is not guaranteed
-! TODO: Allegro CZ - samples needed
-||assets.allegrostatic.com/opbox-gdpr-consents/*$domain=allegro.pl
-||analytics.google.com/*$domain=allegro.pl
-||doubleclick.net/*$domain=allegro.pl
-||gemius.pl/*$domain=allegro.pl
-||googletagmanager.com/*$domain=allegro.pl
-||googletagservices.com/*$domain=allegro.pl
-||kampyle.com/*$domain=allegro.pl
-||ngastatic.com/s4c/tracker.js$domain=allegro.pl
-||smartadserver.com/*$domain=allegro.pl
-||adform.net/*$domain=allegro.pl
-||datadome.co/*$domain=allegro.pl
-||flashtalking.com/*$domain=allegro.pl
-||assets.allegrostatic.com/metrum/icon/appstore*$domain=allegro.pl
-||assets.allegrostatic.com/metrum/icon/playstore*$domain=allegro.pl
-||assets.allegrostatic.com/metrum/icon/appgallery*$domain=allegro.pl
-||assets.allegrostatic.com/metrum/icon/facebook*$domain=allegro.pl
-||assets.allegrostatic.com/metrum/icon/linkedin*$domain=allegro.pl
-||assets.allegrostatic.com/metrum/icon/instagram*$domain=allegro.pl
-||assets.allegrostatic.com/metrum/icon/pinterest*$domain=allegro.pl
-||assets.allegrostatic.com/metrum/icon/youtube*$domain=allegro.pl
-||assets.allegrostatic.com/metrum/icon/charity*$domain=allegro.pl
-||assets.allegrostatic.com/opbox-adspremium/*$domain=allegro.pl
-||assets.allegrostatic.com/opbox-listing-seo/*$domain=allegro.pl
-||assets.allegrostatic.com/e09d28a6-external/*$domain=allegro.pl
-||assets.allegrostatic.com/opbox-plugin-facebook-tracking/*$domain=allegro.pl
-||assets.allegrostatic.com/gemius/*$domain=allegro.pl
-||assets.allegrostatic.com/opbox-adblock-detector/*$domain=allegro.pl
-||assets.allegrostatic.com/opbox-advertisement-box/*$script,domain=allegro.pl
-!---------------------------------------------------------------------------------
-! Allegro Lokalnie
-! Main
-allegrolokalnie.pl##aside.mlc-top-header
-allegrolokalnie.pl##.mlc-home-page__greeting
-allegrolokalnie.pl##.mlc-home-page__hero-carousel
-allegrolokalnie.pl##.mlc-home-page__benefits
-allegrolokalnie.pl##.mlc-home-page__service-info
-allegrolokalnie.pl##.mlc-home-page-carousels
-allegrolokalnie.pl##.footer-banner
-allegrolokalnie.pl##div.mlc-site-footer__nav-section:has(a.mlc-site-footer__mobile-store-link)
-! Listings
-allegrolokalnie.pl##.ml-tooltip
-allegrolokalnie.pl##.phrases
-allegrolokalnie.pl##.mlc-listing__seo-text
-allegrolokalnie.pl##.mlc-share-button-tutorial-tooltip
-allegrolokalnie.pl##.offer-conditions--top
-allegrolokalnie.pl##.mlc-listing__seo-text--top
-allegrolokalnie.pl##section.mlc-suggested-cities
-allegrolokalnie.pl##div.mlc-last-viewed-offers
-allegrolokalnie.pl##+js(set-cookie, adultContentBlockageModal, accepted)
-! Offer page
-allegrolokalnie.pl##.mlc-offer__similar-offers
-allegrolokalnie.pl##.mlc-offer__sp-offers
-allegrolokalnie.pl##article[class^="mlc-offer__"]
-allegrolokalnie.pl##.mlc-offer-banners__banner
-! Price suggestions in the new ad form
-allegrolokalnie.pl##article[data-testid="price-suggestions"]
-allegrolokalnie.pl##article[data-testid="price-range"]
-! Img thumbs aspect ratio fix
-allegrolokalnie.pl##.photo-carousel__thumbnail-link:style(width: auto !important; height: auto !important; max-width: 7.2rem !important; max-height: 7.2rem !important)
-! After payment
-allegrolokalnie.pl##section[class*="mlc-smart-offers-carousel"]
-! 404
-allegrolokalnie.pl##div[data-box-name="lokalnie.topHeader"]
-allegrolokalnie.pl##div[data-box-name="lokalnie.footer"] > aside
-allegrolokalnie.pl##div[data-box-name="lokalnie.errorState"] > div > div > div._wrapper_nEnuK
-allegrolokalnie.pl##article:has(a[href*="play.google.com"])
-! AI slop
-!#if (!env_chromium)
-allegrolokalnie.pl^$replace=/"aiContentGenerationEnabled":true/"aiContentGenerationEnabled":false/i
-!#else
-allegrolokalnie.pl##._d94de_sMD48
-allegrolokalnie.pl##._d94de_y-Sr4
-!#endif
-!---------------------------------------------------------------------------------
-! Allegro Gadane
-! Survey
-spolecznosc.allegro.pl##.lia-panel-dialog-modal-valuesurvey
-spolecznosc.allegro.pl##.ui-widget-overlay
-spolecznosc.allegro.pl##.lia-value-survey-link
-spolecznosc.allegro.pl##.lia-iframe-shim
-!---------------------------------------------------------------------------------
-! MALL CZ/SK/HU/HR + mimovrste [WIP]
-! Main
-mall.cz,mall.sk,mall.hu,mall.hr,mimovrste.com###above-header
-mall.cz,mall.sk,mall.hu,mall.hr,mimovrste.com##a[href^="/kampan"]:upward(1)
-mall.cz,mall.sk,mall.hu,mall.hr,mimovrste.com##.top-icons
-mall.cz,mall.sk,mall.hu,mall.hr,mimovrste.com##.hp-banner__slides
-mall.cz,mall.sk,mall.hu,mall.hr,mimovrste.com##.homepage__container
-mall.cz,mall.sk,mall.hu,mall.hr,mimovrste.com##.menu-brand-panel
-mall.cz,mall.sk,mall.hu,mall.hr,mimovrste.com##.menu-container__banner
-mall.cz,mall.sk,mall.hu,mall.hr,mimovrste.com##.banner
-! TODO: Categories & Listings
-mall.cz,mall.sk,mall.hu,mall.hr,mimovrste.com##.bb-banners--full
-mall.cz,mall.sk,mall.hu,mall.hr,mimovrste.com##.category-best-sellers
-mall.cz,mall.sk,mall.hu,mall.hr,mimovrste.com##.category__smart-banner
-! Offer page
-mall.cz,mall.sk,mall.hu,mall.hr,mimovrste.com##div[product-url]
-mall.cz,mall.hu,mall.hr,mimovrste.com##.detail__up-xsell-recommended
-mall.sk##.db__recommended
-mall.cz,mall.sk,mall.hr,mimovrste.com##.footer-column
-mall.sk##.footer-interest
-mall.sk##.footer-category
-mall.sk##h6:has-text("Môže sa hodiť"):upward(1)
-!---------------------------------------------------------------------------------
-! OLX BG/PL/PT/RO/UA
-! Main
-olx.*###banner
-olx.*##a[data-testid^="cat-promo-"]
-olx.*##div#searchmain-container > div:not(:has(form)):not(:has(div[data-testid="home-categories-menu"]))
-! Listings
-olx.*##form > div:has(div[data-testid="loyalty-banner-wrapper"])
-olx.*##div.listing-item-badge-portal-root > div > div:has(button[data-cy="l-save-search-banner-button"])
-olx.*##div.listing-item-badge-portal-root > div > div:has(div[font-weight])
-olx.*##div[data-cy^="seo-"]
-olx.*##div[data-testid^="seo-"]
-olx.*##p[data-cy="description-text"]
-olx.*##p[data-testid="disclaimer-description"]
-olx.*##div[class*="baxter-placeholder--ads"]
-! https://wykop.pl/wpis/84634051/wczesniej-sobie-latwo-adguardem-ukrywalem-powtarza
-olx.*##div[data-cy="l-card"]:has(a[href*="search_reason=search%7Cpromoted"])
-! PL exclusive
-olx.pl##a[href*="magic.olx.pl"]
-olx.pl##div[data-testid="company-profile-employers-carousel-root"]
-! Offer page
-olx.*##a[href$="/home/"]:has(img)
-olx.*##section[data-cy="ad-recommendations"]
-olx.pl##a:has(picture[data-testid="responsive-apollo-img"])
-! Your account
-olx.*##+js(set-local-storage-item, dop_onb_popup_shown, true)
-olx.*##div[data-testid="onboarding-banner"]
-! General/Misc
-olx.*##.baxter-container
-olx.*##div#footerContent > div > div > div:has(a[href*="google"])
-! Annoyance: tooltip
-olx.*##div[id^="tippy-"]
-! Annoyance: survey
-olx.*##.laq-survey
-! Annoyance: "new" "notification" animation
-olx.*##.css-1mjm1vu
-! Annoyance: auto-scroll-to-top-when-loaded "feature"
-olx.*##+js(set, window.scrollTo, noopFunc)
-!---------------------------------------------------------------------------------
-! Vinted
-vinted.*##+js(set-cookie, is_shipping_fees_applied_info_banner_dismissed, true)
-vinted.*##+js(set-local-storage-item, search_by_image_interacted_count, 2)
-vinted.*##div[class^="_ads-module"][data-testid="slot-container"]
-vinted.*##div[class*="_slotContainer"]
-vinted.*##.sidebar-container
-vinted.*##div[data-testid^="closet-promotion"]
-!---------------------------------------------------------------------------------
-! APTEKAOLMED.PL
-aptekaolmed.pl###adshero-top-banner
-aptekaolmed.pl###dynamic-topbar
-aptekaolmed.pl###productOfTheDay
-aptekaolmed.pl###refund-diapers-btn
-aptekaolmed.pl###search > div.pills-wrapper
-aptekaolmed.pl##.adshero-parallax
-aptekaolmed.pl##.box-addit-top
-aptekaolmed.pl##.promo-product-cart
-aptekaolmed.pl##.promotion
-aptekaolmed.pl##.swiper-disabled
-aptekaolmed.pl##div.mt-4.refund-product-badge
-!---------------------------------------------------------------------------------
-! MOJOSOFT.COM.PL
-/js/asystent.js$domain=mojosoft.com.pl
-||ssl.ceneo.pl$domain=mojosoft.com.pl
-||pixel.wp.pl$domain=mojosoft.com.pl
-||bat.bing.com$domain=mojosoft.com.pl
-! Ukryj irytujący scrollbar
-mojosoft.com.pl##body:style(overflow: visible !important;)
-!---------------------------------------------------------------------------------
-! MEDIAEXPERT.PL
-mediaexpert.pl###expert-help-bubble-content
-mediaexpert.pl###help-bubble-content
-mediaexpert.pl##.footer-app-banner
-mediaexpert.pl##.promobar
-mediaexpert.pl##.right_float_element
-mediaexpert.pl##.wrapper-parallax
-mediaexpert.pl##div.new-editor-adserver.personalized-banner
-mediaexpert.pl##div[id*="newsletter"]
 ! ---- source: https://raw.githubusercontent.com/olegwukr/polish-privacy-filters/master/adblock.txt ----
 ! Oficjalne polskie filtry prywatności
 ! Support:
@@ -37427,6 +37048,59 @@ youtube.com##ytm-reel-shelf-renderer
 youtube.com#?#yt-tab-shape.ytTabShapeHostClickable.ytTabShapeHost > .ytTabShapeTab:has-text(Shorts)
 youtube.com##ytm-shorts-lockup-view-model-v2
 ! ---- source: https://hole.cert.pl/domains/v2/domains_adblock.txt ----
+||allegro.00049499994.quest^$all
+||ozzpiw.harmoniously.vu^$all
+||wp.harmoniously.vu^$all
+||gift.harmoniously.vu^$all
+||lesnica.harmoniously.vu^$all
+||h7q.vercel.app^$all
+||gaullacfashion.shop^$all
+||maintenances.digital^$all
+||dilocs.shop^$all
+||careformommy.com^$all
+||cranfordlodge.com^$all
+||vinted.pi-oferta88421.lat^$all
+||allegrolokalnie.pi-oferta88421.lat^$all
+||olx.pl-zakupy23875.sbs^$all
+||allegro.pi-oferta88421.lat^$all
+||allegro.pl-zakupy23875.sbs^$all
+||alebilet.pi-oferta88421.lat^$all
+||dv905sj2pm963.gaullacfashion.shop^$all
+||fs445bhx3b537.gaullacfashion.shop^$all
+||allegrolokalnie.pl-zakupy23875.sbs^$all
+||olx.pi-oferta88421.lat^$all
+||abbonebefr.store^$all
+||truly7-amet36.cfd^$all
+||pl-zakupy23875.sbs^$all
+||pi-oferta88421.lat^$all
+||rdrt.0816getraenke-alternatif.de^$all
+||deduicedesigns.com^$all
+||novexdelivery.com^$all
+||snalincre.store^$all
+||prearrivalstayguest-confirmstaydata.com^$all
+||datescheckinouts-258104.com^$all
+||brolikent.com^$all
+||continentalselect.shop^$all
+||sfamacompr.store^$all
+||truly7-totam81.cfd^$all
+||mondaconce.store^$all
+||allegrolokalnie.pl-zakupy993812231.top^$all
+||fk0ctu1b2l63n0.s3.us-east-1.amazonaws.com^$all
+||wagabonpolar.base44.app^$all
+||etmal-marine-prime.base44.app^$all
+||enthusiastic-age.base44.app^$all
+||enchaameo.store^$all
+||allegrolokalnie.oferta-74512411.cfd^$all
+||oferta-74512411.cfd^$all
+||kghmf4tfds.lovable.app^$all
+||allegrolokalnie.oferta9325056.shop^$all
+||reneeshoes-pl.shop^$all
+||pi-oferta858125.lat^$all
+||vinted.pi-oferta858125.lat^$all
+||alebilet.pi-oferta858125.lat^$all
+||allegrolokalnie.pi-oferta858125.lat^$all
+||allegro.pi-oferta858125.lat^$all
+||olx.pi-oferta858125.lat^$all
 ||accapinds.store^$all
 ||kryptolentix-ai.net^$all
 ||truly6-modi87.cfd^$all
@@ -162560,75 +162234,3 @@ youtube.com##ytm-shorts-lockup-view-model-v2
 ||allegrolokalinie.pl-943823.cfd^$all
 ||rowerdreamo.shop^$all
 ||gardenvivo.shop^$all
-||saaaversawarded.info^$all
-||buzyxie.com^$all
-||bubakiy.com^$all
-||allegrolokalnie.12097623.cfd^$all
-||12097623.cfd^$all
-||fundora-stocks.com^$all
-||allegrolokalnie.oferta-8473-pl.shop^$all
-||trevix-earnings.com^$all
-||alebilet.oferta-8473-pl.shop^$all
-||coveral-treasury.com^$all
-||allegro.oferta-483002-pl.shop^$all
-||alebilet.pl63526289oferta.shop^$all
-||olx.oferta-8473-pl.shop^$all
-||vinted.oferta-8473-pl.shop^$all
-||allegro.oferta-8473-pl.shop^$all
-||oferta-8473-pl.shop^$all
-||oferta-483002-pl.shop^$all
-||alebilet.oferta-483002-pl.shop^$all
-||vinted.pl63526289oferta.shop^$all
-||olx.pl63526289oferta.shop^$all
-||pl63526289oferta.shop^$all
-||vinted.oferta-483002-pl.shop^$all
-||olx.oferta-483002-pl.shop^$all
-||allegro.pl63526289oferta.shop^$all
-||allegrolokalnie.pl63526289oferta.shop^$all
-||paczkapost.milkzlot24.cyou^$all
-||olx.wiosna-2026-nr73921.click^$all
-||alebilet.wiosna-2026-nr73921.click^$all
-||allegro.wiosna-2026-nr73921.click^$all
-||vinted.wiosna-2026-nr73921.click^$all
-||wiosna-2026-nr73921.click^$all
-||allegrolokalnie.wiosna-2026-nr73921.click^$all
-||meta.supportbluerestoreaccess.sbs^$all
-||euonllz.shop^$all
-||ecconlinevips.shop^$all
-||lastikturk.com^$all
-||a8nmdx.fit^$all
-||candaonlinestores.top^$all
-||deal-kiste.de^$all
-||gabicremer.shop^$all
-||zolmirato.top^$all
-||allegrolokalnie.oferta5741853.cfd^$all
-||oferta5741853.cfd^$all
-||vinted.id85132.help^$all
-||hello11teamsports.club^$all
-||login.verify-mail.icu^$all
-||bestfb.de^$all
-||ashleestanley.shop^$all
-||oneworldremit.com^$all
-||addisugebeya.com^$all
-||blocor-funds.com^$all
-||alddaa.uk^$all
-||alddcc.uk^$all
-||euoutdoor.top^$all
-||novathinksys.com^$all
-||stellar-yield.com^$all
-||allegrolokalnie.pl883995.cfd^$all
-||eddydom.com^$all
-||vnchecker.site^$all
-||catboybnb.fun^$all
-||allegrolokalnie.oferta-483002-pl.shop^$all
-||corecart.top^$all
-||spaceymulberry.utopivision.com^$all
-||counmmterreform.info^$all
-||ideassieve.eskiciogludental.com^$all
-||quietvall.amovietoday.com^$all
-||aureviastyle.shop^$all
-||e9pswr.fit^$all
-||canovafiro.com^$all
-||capointvani.com^$all
-||cabridgelaxo.com^$all
-||fatherdog.fun^$all
