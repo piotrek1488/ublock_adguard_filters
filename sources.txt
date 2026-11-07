@@ -13,6 +13,7 @@
 lists/filters.txt
 lists/polsatnews_darkmode.txt
 lists/olx_darkmode.txt
+lists/allegro_darkmode.txt
 
 # --- Polish Annoyance Filters (PolishFiltersTeam) ---
 # PPB.txt and PAF_supp.txt pull in their sub-lists via !#include.
@@ -25,7 +26,8 @@ https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/adblock_socia
 https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/polish-adblock-filters/adblock.txt
 
 # --- Allegro ---
-https://raw.githubusercontent.com/CrusheerPL/AlleBlockV2/master/AlleBlockV2.txt
+# This one blocks almost whole landing page
+# https://raw.githubusercontent.com/CrusheerPL/AlleBlockV2/master/AlleBlockV2.txt
 
 # --- Polish privacy filters (last updated 2022-09) ---
 https://raw.githubusercontent.com/olegwukr/polish-privacy-filters/master/adblock.txt
