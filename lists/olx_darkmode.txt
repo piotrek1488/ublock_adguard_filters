@@ -1,0 +1,189 @@
+! OLX dark mode for uBlock Origin (olx.pl)
+!
+! Design
+!  OLX paints almost everything through CSS custom properties (design tokens,
+!  --colors* / --color-*, defined on :root). Re-defining the tokens re-colors
+!  text, surfaces, borders, buttons, inputs, badges, dropdowns and hover states
+!  in one place, instantly and regardless of the (hashed) class names.
+!  This is why there is NO :matches-css() here: that engine runs only after a DOM
+!  mutation and with a delay, which caused the flashing on load and the white
+!  flash when a card (e.g. ad-price-container) was re-mounted during scroll.
+!  Token overrides apply before paint, so there is no flash and nothing reverts.
+!  A few leftovers (hard-coded colors, SVG icons) are handled with stable hooks.
+! Palette follows OLX: charcoal surfaces, teal accent #3CDED8, near-white text.
+
+! ==== 1. Theme tokens (nexus design system) ====
+! Surfaces: #12151B page, #1E2026 card, #23262D elevated/dropdown. Text #EAF0F1. Accent #3CDED8.
+! Opacity tokens are reused as hover/overlay tints; the *Primary* ones were black
+! (invisible or inverted on dark), so they are remapped to light translucent white.
+olx.pl##:root:style(color-scheme: dark !important; --colorsBackgroundPrimary: #1E2026 !important; --colorsBackgroundSecondary: #12151B !important; --colorsBackgroundInverse: #0A1F22 !important; --colorsBackgroundElevated: #23262D !important; --colorsBackgroundDisabled: #2A2D33 !important; --colorsBackgroundActionPrimary: #3CDED8 !important; --colorsBackgroundActionSecondary: #FFFFFF14 !important; --colorsBackgroundAccent: #3CDED8 !important; --colorsBackgroundAccentSubtle: #0C3B3D !important; --colorsBackgroundTransparent: #1E202600 !important; --colorsBackgroundPhoto: #12151BCC !important; --colorsForegroundPrimary: #EAF0F1 !important; --colorsForegroundSecondary: #AEBEC2 !important; --colorsForegroundAccent: #3CDED8 !important; --colorsForegroundActionPrimary: #EAF0F1 !important; --colorsForegroundDisabled: #7F8E92 !important; --colorsForegroundPlaceholder: #8A999D !important; --colorsForegroundOnActionPrimary: #02282C !important; --colorsForegroundOnAccent: #02282C !important; --colorsForegroundOnAccentSubtle: #C8F8F6 !important; --colorsForegroundOnInverse: #FFFFFF !important; --colorsForegroundStatusSuccess: #6BE3DD !important; --colorsForegroundStatusWarning: #FFCE32 !important; --colorsForegroundStatusError: #FF8169 !important; --colorsBorderStrong: #AEBEC2 !important; --colorsBorderMedium: #FFFFFF52 !important; --colorsBorderSubtle: #FFFFFF21 !important; --colorsBorderInverse: #12151B !important; --colorsBorderActionPrimary: #EAF0F1 !important; --colorsBorderAccent: #3CDED8 !important; --colorsBorderFocus: #3CDED8 !important; --colorsBorderDisabled: #3A3E44 !important; --colorsBorderStatusError: #FF8169 !important; --colorsOpacityPrimaryStrong: #FFFFFF26 !important; --colorsOpacityPrimaryMedium: #FFFFFF1F !important; --colorsOpacityPrimarySubtle: #FFFFFF14 !important; --colorsOpacitySecondaryStrong: #FFFFFFA3 !important; --colorsOpacitySecondaryMedium: #FFFFFF66 !important; --colorsOpacitySecondarySubtle: #FFFFFF3D !important; --colorsOpacityOverlayShadow: #00000066 !important; --colorsOpacityOverlayBackdrop: #000000CC !important; --colorsOpacityOverlayBackdropInverse: #12151BCC !important; --colorsBackgroundStatusSuccessSubtle: #0E3B3D !important; --colorsBackgroundStatusWarningSubtle: #3D3414 !important; --colorsBackgroundStatusErrorSubtle: #4A1D16 !important; --buttonIconToggleBackgroundColorSelected: #23262D !important; --buttonIconToggleBackgroundColorUnselected: #23262D !important; --buttonIconToggleIconColorSelected: #3CDED8 !important; --buttonIconToggleIconColorUnselected: #EAF0F1 !important; --swiper-theme-color: #3CDED8 !important; --swiper-navigation-color: #EAF0F1 !important;)
+! Raw "Light*" primitive palette: some components (e.g. ad-login-dialog uses
+! bg-(--primitivesColorsLightBlue01BlueBGLight)) paint straight from these very
+! light primitives. Remap the pale backgrounds to OLX dark-theme equivalents.
+olx.pl##:root:style(--primitivesColorsLightBlue01BlueBGLight: #17284E !important; --primitivesColorsLightBlue02BlueLight: #1D3C81 !important; --primitivesColorsLightTeal01TealBGLight: #0C3B3D !important; --primitivesColorsLightTeal02TealLight: #0E4F50 !important; --primitivesColorsLightYellow01YellowBGLight: #3D3414 !important; --primitivesColorsLightYellow02YellowLight: #4A3F18 !important; --primitivesColorsLightRed01RedBGLight: #4A1D16 !important; --primitivesColorsLightRed02RedLight: #5E2A20 !important; --primitivesColorsLightGray01White: #1E2026 !important; --primitivesColorsLightGray02Gray: #23262D !important; --primitivesColorsLightGray03Gray: #12151B !important;)
+! Tailwind v4 token layer (--color-* mirrors the --colors* set; used by utility classes).
+olx.pl##:root:style(--color-background-primary: #1E2026 !important; --color-background-secondary: #12151B !important; --color-background-elevated: #23262D !important; --color-background-accent: #3CDED8 !important; --color-background-accent-subtle: #0C3B3D !important; --color-background-action-primary: #EAF0F1 !important; --color-background-disabled: #2A2D33 !important; --color-foreground-primary: #EAF0F1 !important; --color-foreground-secondary: #AEBEC2 !important; --color-foreground-accent: #3CDED8 !important; --color-foreground-placeholder: #8A999D !important; --color-foreground-on-accent: #02282C !important; --color-foreground-on-inverse: #FFFFFF !important; --color-border-subtle: #FFFFFF21 !important; --color-border-medium: #FFFFFF52 !important; --color-border-strong: #AEBEC2 !important; --color-border-focus: #3CDED8 !important;)
+
+! ==== 2. Page surfaces that use hard-coded colors (not tokens) ====
+olx.pl##html:style(background-color: #12151B !important)
+olx.pl##body:style(background-color: #12151B !important)
+olx.pl###mainContent:style(background-color: #12151B !important)
+olx.pl###mainContent > div:style(background-color: #12151B !important)
+olx.pl###mainContent > div > div:style(background-color: #12151B !important)
+! Home page mint "site information" footer block.
+olx.pl##[data-testid="site-information"]:style(background-color: #12151B !important; color: #EAF0F1 !important)
+olx.pl##[data-testid="site-information"] *:style(color: #EAF0F1 !important; background-color: transparent !important)
+! Home page: big white block right under the search bar (ad/promo container).
+olx.pl##[data-testid="home-page"] > div:style(background-color: #12151B !important)
+olx.pl##[data-testid="home-page"] > div > div:style(background-color: #12151B !important)
+! Home page "popular searches" / categories block (light-gray #F2F4F5, dark text).
+olx.pl##[data-testid="popular-box"]:style(background-color: #12151B !important)
+olx.pl##[data-testid="popular-box"] a:style(color: #AEBEC2 !important)
+olx.pl##[data-testid="popular-box"] span, [data-testid="popular-box"] h3, [data-testid="popular-box"] strong:style(color: #EAF0F1 !important)
+! Footer (#footerContent): links hard-code dark text #02282C.
+olx.pl###footerContent:style(background-color: #12151B !important)
+olx.pl###footerContent a:style(color: #AEBEC2 !important)
+olx.pl###footerContent button:style(color: #AEBEC2 !important)
+olx.pl###footerContent span:style(color: #EAF0F1 !important)
+olx.pl###footerContent h3, #footerContent h4, #footerContent strong:style(color: #EAF0F1 !important)
+
+! ==== 3. Offer page (/d/oferta/...) hard-coded card/text colors ====
+! These Emotion rules hard-code #FFFFFF / #02282C / #406367 / #7F9799 instead of tokens.
+! The selectors below are stable (ids, data-testid), so they apply on first paint.
+! Left column cards (gallery wrapper, description, parameters, contact).
+olx.pl##[data-testid="main"] > div:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="main"] > div > div:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="main"] section > div:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="ad_description"]:style(color: #EAF0F1 !important)
+olx.pl##[data-testid="ad_description"] *:style(color: #EAF0F1 !important)
+! Right column cards (price/action box, seller, map, returns, legal).
+! Color them all #1E2026; the ad slot inside is re-darkened in section 6, so we do
+! NOT exclude cards that contain a slot (that left the price card white).
+olx.pl##[data-testid="aside"] > div:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="aside"] > div > div:style(background-color: #1E2026 !important)
+! Under-offer carousels ("more from seller", "see also"): color the section and
+! every box dark, then let images/pictures stay transparent so photos are untouched.
+olx.pl##[data-testid="seller-other-ads"]:style(background-color: #12151B !important)
+olx.pl##[data-testid="seller-other-ads"] div:style(background-color: #12151B !important)
+olx.pl##[data-testid="seller-other-ads"] [data-testid="l-card"]:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="seller-other-ads"] img, [data-testid="seller-other-ads"] picture:style(background-color: transparent !important)
+olx.pl##[data-testid="seller-other-ads"] a:style(color: #AEBEC2 !important)
+olx.pl##[data-testid="ad-recommendations"] div:style(background-color: #12151B !important)
+olx.pl##[data-testid="ad-recommendations"] [data-testid="l-card"]:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="ad-recommendations"] img, [data-testid="ad-recommendations"] picture:style(background-color: transparent !important)
+! Profile link card in the seller box.
+olx.pl##[data-testid="user-profile-link"] > div:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="ad-price-container"]:style(background-color: #1E2026 !important; color: #EAF0F1 !important)
+olx.pl##[data-testid="offer_title"]:style(color: #EAF0F1 !important)
+olx.pl##[data-testid="offer_title"] h4:style(color: #EAF0F1 !important)
+olx.pl##[data-testid="seller_card"]:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="map-aside-section"]:style(background-color: #1E2026 !important)
+! Carousels under the offer ("more from the seller", "see also").
+olx.pl##[data-testid="seller-other-ads"]:style(background-color: #12151B !important)
+olx.pl##[data-testid="ad-recommendations"]:style(background-color: #12151B !important)
+! Breadcrumbs / posted-at / view counter (hard-coded gray text).
+olx.pl##[data-testid="breadcrumbs"]:style(color: #AEBEC2 !important)
+olx.pl##[data-testid="breadcrumbs"] *:style(color: #AEBEC2 !important)
+! Blue info banner ("ratings are verified").
+olx.pl##[data-nx-name="Banner"]:style(background-color: #17284E !important; color: #CEDDFF !important)
+olx.pl##[data-nx-name="Banner"] *:style(color: #CEDDFF !important)
+
+! ==== 4. Listing cards everywhere (results, categories, under-offer carousels) ====
+! l-card / ad-card share one structure site-wide; the white body is div.css-* inside.
+! Color the card and its inner content box; images stay transparent.
+olx.pl##[data-testid="ad-card"]:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="ad-card"] > div:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="ad-card"] > div > div:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="ad-card"] img, [data-testid="ad-card"] picture:style(background-color: transparent !important)
+! The slider wrapper and its section can keep a white/gray background behind the cards.
+olx.pl##[data-testid="adlist-slider"]:style(background-color: #12151B !important)
+olx.pl##section:has(> div > [data-testid="adlist-slider"]), section:has([data-testid="adlist-slider"]):style(background-color: #12151B !important)
+olx.pl##div:has(> [data-testid="adlist-slider"]):style(background-color: #12151B !important)
+! Card title, price and meta line on result and category pages.
+olx.pl##[data-testid="l-card"]:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="l-card"] h4:style(color: #EAF0F1 !important)
+olx.pl##[data-testid="l-card"] h6:style(color: #EAF0F1 !important)
+olx.pl##[data-testid="l-card"] p:style(color: #AEBEC2 !important)
+olx.pl##[data-testid="ad-card-title"]:style(color: #EAF0F1 !important)
+olx.pl##[data-testid="location-date"]:style(color: #AEBEC2 !important)
+
+! ==== 5. Image placeholders (hard-coded light gray #ECEEEF) ====
+olx.pl##[data-testid="image-gallery-skeleton"]:style(background-color: #23262D !important)
+olx.pl##.swiper-zoom-container:style(background-color: #1E2026 !important)
+! Listing-card thumbnail background (#ECEEEF) behind the photo.
+! The card link has TWO stacked image boxes, both direct children:
+!   - css-11ow61k (first-child, position:relative) = the gray placeholder UNDER the photo
+!   - css-6gymc3 (position:absolute)               = an overlay ON TOP of the photo
+! Only color the FIRST child (the placeholder). Coloring the overlay hid the photo.
+olx.pl##[data-testid="l-card"] a > div:first-child:style(background-color: #23262D !important)
+! Keep thumbnails fully visible regardless of any rule above.
+olx.pl##[data-testid="l-card"] img:style(opacity: 1 !important; visibility: visible !important; display: block !important)
+
+! ==== 5b. Dropdown lists: geolocation + category hover ====
+! Geolocation suggestion row hard-codes a very light teal (#E9FCFB).
+olx.pl##.css-1u1e9kf:style(background-color: #0C3B3D !important; color: #EAF0F1 !important)
+olx.pl##.css-1u1e9kf *:style(color: #EAF0F1 !important)
+! Category menu items: OLX hover does `background: var(--colorsForegroundPrimary);
+! color: var(--colorsForegroundOnDark)`. Since we made ForegroundPrimary light, the
+! hover became light-bg + white-text (unreadable). Force a dark hover instead.
+olx.pl##[data-testid="category-dropdown-list"] [role="menuitem"]:hover:style(background-color: #2E3138 !important; color: #EAF0F1 !important)
+olx.pl##[data-testid="category-dropdown-list"] [role="menuitem"]:hover *:style(color: #EAF0F1 !important)
+olx.pl##.css-1wm2c8y:hover:style(background-color: #2E3138 !important; color: #EAF0F1 !important)
+olx.pl##.css-1wm2c8y:hover *:style(color: #EAF0F1 !important)
+! The currently-selected category is a different class (css-1d4n9kj) painted with
+! --colorsForegroundPrimary (now light) + white text = unreadable. Make it a dark
+! teal "active" row instead.
+olx.pl##[data-testid="category-dropdown-list"] .css-1d4n9kj:style(background-color: #0C3B3D !important; color: #EAF0F1 !important)
+olx.pl##[data-testid="category-dropdown-list"] .css-1d4n9kj *:style(color: #EAF0F1 !important)
+olx.pl##.css-1d4n9kj:style(background-color: #0C3B3D !important; color: #EAF0F1 !important)
+olx.pl##.css-1d4n9kj *:style(color: #EAF0F1 !important)
+
+! ==== 5c. Header dropdowns (notifications, user menu) ====
+! Notification bell dropdown has a hard-coded white panel.
+olx.pl##[data-testid="notification-hub-dropdown"]:style(background-color: #1E2026 !important; color: #EAF0F1 !important)
+olx.pl##[data-testid="notification-hub-dropdown"] > div, [data-testid="notification-hub-dropdown"] section, [data-testid="notification-hub-dropdown"] li:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="notification-hub-dropdown"] :is(h2,h3,h4,p,span,a,li,div):style(color: #EAF0F1 !important)
+! Logged-in header wrappers / user menu. The header bar uses --colorsBackgroundInverse
+! (#0A1F22), so match the dropdowns to that exact color instead of the card color.
+olx.pl##[data-testid="notification-hub-wrapper"]:style(background-color: #0A1F22 !important; color: #EAF0F1 !important)
+olx.pl##[data-testid="notification-hub-wrapper"] > div:style(background-color: #0A1F22 !important)
+olx.pl##[data-testid="qa-user-dropdown"]:style(background-color: #0A1F22 !important; color: #EAF0F1 !important)
+olx.pl##[data-testid="qa-user-dropdown"] > div, [data-testid="qa-user-dropdown"] li, [data-testid="qa-user-dropdown"] a:style(background-color: #0A1F22 !important; color: #EAF0F1 !important)
+olx.pl##[data-testid="qa-user-dropdown"] a:hover, [data-testid="qa-user-dropdown"] li:hover:style(background-color: #123034 !important)
+olx.pl##.css-1o0n0nx:style(background-color: #0A1F22 !important; color: #EAF0F1 !important)
+
+! ==== 5d. "Dodaj ogłoszenie" button ====
+! Original is a white CTA on the dark bar; as a dark-theme accent, make it teal.
+olx.pl##[data-testid="post-new-ad-button"]:style(background-color: #3CDED8 !important; color: #02282C !important; border-color: #3CDED8 !important)
+olx.pl##[data-testid="post-new-ad-button"] *:style(color: #02282C !important)
+olx.pl##[data-testid="post-new-ad-button"]:hover:style(background-color: #5FE8E2 !important)
+
+! ==== 6. Icons, carousels, ad slots ====
+! Carousel arrows are black SVG background images.
+olx.pl##div.swiper-button-prev:style(filter: invert(1) !important)
+olx.pl##div.swiper-button-next:style(filter: invert(1) !important)
+! Dark "protected purchase" badge icon.
+olx.pl##img[src*="safety_badge"]:style(filter: brightness(0) invert(1) !important)
+! Ad slots: the slot's own box is dark, but the ad content (cross-origin iframe/
+! image) stays bright. We cannot recolor cross-origin content, so dim it slightly
+! to reduce the glare; the empty-slot white OLX-logo placeholder is removed.
+olx.pl##[data-testid="qa-advert-slot"]:style(background-color: #12151B !important)
+olx.pl##[data-testid="qa-advert-slot"].with-placeholder-image:style(background-image: none !important)
+olx.pl##[data-testid="qa-advert-slot"] iframe:style(filter: brightness(0.82) !important; opacity: 0.92 !important)
+olx.pl##.baxter-container, [class*="baxter-background"]:style(background-color: #12151B !important)
+
+! ==== 7. Cookie consent (OneTrust) ====
+olx.pl###onetrust-banner-sdk:style(background-color: #1E2026 !important; color: #EAF0F1 !important)
+olx.pl###onetrust-banner-sdk :is(h2,h3,p,span,a,div,li,button):not(#onetrust-accept-btn-handler):not(#onetrust-reject-all-handler):not(#onetrust-pc-btn-handler):style(color: #EAF0F1 !important; background-color: transparent !important)
+olx.pl###onetrust-accept-btn-handler:style(background-color: #3CDED8 !important; border-color: #3CDED8 !important; color: #02282C !important)
+olx.pl###onetrust-reject-all-handler:style(background-color: #3CDED8 !important; border-color: #3CDED8 !important; color: #02282C !important)
+olx.pl###onetrust-pc-btn-handler:style(background-color: transparent !important; border-color: #EAF0F1 !important; color: #EAF0F1 !important)
+olx.pl###onetrust-pc-sdk .ot-pc-footer-logo:style(background-color: #1E2026 !important)
+olx.pl###onetrust-pc-sdk .ot-pc-footer-logo img:style(filter: invert(1) hue-rotate(180deg) !important)
+olx.pl###onetrust-pc-sdk .ot-always-active:style(color: #8FB0FF !important)
+
+! ==== 8. Fewer promoted listings ====
+! OLX tags promoted results in the link: ...?search_reason=search|promoted
+! Remove these two lines to keep promoted cards.
+olx.pl##[data-testid="l-card"]:has(a[href*="search_reason=search%7Cpromoted"])
+olx.pl##[data-testid="l-card"]:has(a[href*="search_reason=search|promoted"])

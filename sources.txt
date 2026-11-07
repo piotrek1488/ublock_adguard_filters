@@ -12,6 +12,7 @@
 # --- Own lists ---
 lists/filters.txt
 lists/polsatnews_darkmode.txt
+lists/olx_darkmode.txt
 
 # --- Polish Annoyance Filters (PolishFiltersTeam) ---
 # PPB.txt and PAF_supp.txt pull in their sub-lists via !#include.
