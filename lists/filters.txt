@@ -194,6 +194,9 @@ poral.eu##.adblock-message:style(display: none !important;)
 poral.eu##.no-scroll:style(overflow: auto !important;)
 poral.eu##.overlay:style(display: none !important;)
 poral.eu##html.lb-disable-scrolling:style(overflow: auto !important;)
+poral.eu#$#body { overflow: auto !important; }
+*$script,third-party,domain=poral.eu
+||go.buybox.click^$domain=poral.eu
 
 ! ===== ppe.pl =====
 www.ppe.pl###hot-slider
