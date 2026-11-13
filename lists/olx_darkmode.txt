@@ -152,11 +152,88 @@ olx.pl##[data-testid="qa-user-dropdown"] > div, [data-testid="qa-user-dropdown"]
 olx.pl##[data-testid="qa-user-dropdown"] a:hover, [data-testid="qa-user-dropdown"] li:hover:style(background-color: #123034 !important)
 olx.pl##.css-1o0n0nx:style(background-color: #0A1F22 !important; color: #EAF0F1 !important)
 
-! ==== 5d. "Dodaj ogłoszenie" button ====
-! Original is a white CTA on the dark bar; as a dark-theme accent, make it teal.
+! ==== 5d. Accent buttons: teal background needs dark text ====
+! We set BackgroundActionPrimary to teal (#3CDED8). Primary/alternative buttons then
+! have a teal background, but OLX hard-codes their --textColor to white (originally
+! dark bg + white text). On teal that white text is unreadable, so force dark text
+! on every teal button and chip. #02282C is the OnAccent foreground.
+olx.pl##[data-button-variant="primary"], [data-button-variant="alternative"]:style(color: #02282C !important)
+olx.pl##[data-button-variant="primary"] *, [data-button-variant="alternative"] *:style(color: #02282C !important)
+! "Dodaj ogłoszenie" is a tertiary-style CTA on the dark bar; keep it teal.
 olx.pl##[data-testid="post-new-ad-button"]:style(background-color: #3CDED8 !important; color: #02282C !important; border-color: #3CDED8 !important)
 olx.pl##[data-testid="post-new-ad-button"] *:style(color: #02282C !important)
 olx.pl##[data-testid="post-new-ad-button"]:hover:style(background-color: #5FE8E2 !important)
+
+! ==== 5e. My-account subpages (payments, jobs, profile, deliveries, OLX Plus) ====
+! These pages hard-code #FFFFFF cards, #F2F4F5 section backgrounds and #02282C text
+! instead of using tokens, so the token overrides alone don't reach them.
+! Page-level backgrounds (including nested <main> on the jobs page).
+olx.pl##main[data-testid="purchases-layout"], main[data-testid="candidate-profile-fm-content"], #candidate-profile-fm-content, #candidate-profile-fm-content main, #main-wrapper[data-testid="loyalty-hub-main-wrapper"], main.css-c9t7wz:style(background-color: #12151B !important)
+! Payments: search form + history table.
+olx.pl##form.css-hkq6xn, form.css-hkq6xn button, [data-cy="payments-table-body"], [data-cy="payments-table-body"] tr, table.css-kceoy5 thead, table.css-kceoy5 tbody:style(background-color: #1E2026 !important)
+olx.pl##[data-cy="payments-table-body"] td, table.css-kceoy5 th:style(color: #EAF0F1 !important; border-color: #3A3E44 !important)
+! Profile: KYC / payout details card.
+olx.pl##[data-testid="kyc-status-ok"], #payment-details:style(background-color: #1E2026 !important)
+! Deliveries: order cards (incl. inner gray strips/badges) and the details modal.
+olx.pl##[data-testid="order-card"], [data-testid="order-card"] > div, [data-testid="order-card"] div[class], [data-testid="order_overview-wrapper"] section, [data-testid="purchases-layout"] section:style(background-color: #1E2026 !important)
+olx.pl##.ReactModalPortal [class*="Modal"], .ReactModalPortal > div > div:style(background-color: #1E2026 !important; color: #EAF0F1 !important)
+! OLX Plus: hub cards / sections (incl. inner cards).
+olx.pl##[data-testid="loyalty-hub-main-wrapper"] section, [data-testid="loyalty-hub-main-wrapper"] aside, [data-testid="loyalty-hub-main-wrapper"] aside div, [data-testid="loyalty-hub-main-wrapper"] section div[class], [data-testid="inactive-card-item"], [data-testid="service-fee-section"], [data-testid="free-shipments-section"]:style(background-color: #1E2026 !important)
+! Broad fallback for these subpages: any white card and any dark text inside the
+! account content area. Scoped to #mainContent so it does not touch listings.
+olx.pl###mainContent section, #mainContent article, #mainContent form, #mainContent table, #mainContent thead, #mainContent tbody, #mainContent tr:style(background-color: #1E2026 !important)
+olx.pl###mainContent input:not([type="checkbox"]):not([type="radio"]), #mainContent select, #mainContent textarea:style(background-color: #171F22 !important; color: #EAF0F1 !important; border-color: #3A3E44 !important)
+! Dark text (#02282C / #002F34) hard-coded on the now-dark account cards is invisible.
+! Lighten text inside the known account containers (ids/data-testid), covering
+! purchases, profile payout details, OLX Plus and order cards.
+! Lighten account text. Exclude only accent buttons (primary/alternative keep their
+! dark-on-teal text from section 5d); plain/copy buttons are included.
+olx.pl##[data-testid="purchases-layout"] :is(p,span,h1,h2,h3,h4,h5,h6,li,strong,b,div,td,th):not([data-button-variant="primary"] *):not([data-button-variant="alternative"] *), #payment-details :is(p,span,h1,h2,h3,h4,h5,h6,li,strong,b,div):not([data-button-variant="primary"] *):not([data-button-variant="alternative"] *), [data-testid="kyc-user-details"] :is(p,span,h2,h3,h4,strong,b,div), [data-testid="kyc-banner-portal"] :is(p,span,h2,h3,h4,strong,b):style(color: #EAF0F1 !important)
+! Delivery onboarding popover (ReactModalPortal, directly under body): dark bg +
+! light text for its heading/paragraph; its dismiss button text stays light too.
+olx.pl##.ReactModalPortal :is(h2,h3,h4,p,span,strong,li):not([data-button-variant="primary"] *):not([data-button-variant="alternative"] *):style(color: #EAF0F1 !important)
+! OLX Plus action buttons that are NOT accent (transparent/ghost) have dark text.
+olx.pl##[data-testid="loyalty-hub-main-wrapper"] button:not([data-button-variant="primary"]):not([data-button-variant="alternative"]), [data-testid="loyalty-hub-main-wrapper"] button:not([data-button-variant="primary"]):not([data-button-variant="alternative"]) span:style(color: #EAF0F1 !important)
+
+! ==== 5f. Old-layout invoice/payments page (olx-website-rebranded, not the new SPA) ====
+! A separate legacy template with its own classes and #02282C/#002F34/#FFFFFF colors.
+olx.pl##body.myaccountview, #innerLayout, .myaccount-pageinfo-container, .pageinfo, .paybalance-box, .paybalance-box__balance-label, #headerLogo, .wrapper, [class*="paybalance"]:style(background-color: #12151B !important)
+olx.pl##.myaccount-pageinfo-container :is(h1,h2,h3,p,span,a,strong,b,label), .pageinfo :is(h1,h2,h3,p,span,a,label), [class*="paybalance"] :is(span,p,strong,label), #headerLogo, #postNewAdLink:style(color: #EAF0F1 !important)
+olx.pl##.myaccount-content, .myaccount-box, [class*="invoice" i] table, [class*="invoice" i] section, [class*="invoice" i] .box:style(background-color: #1E2026 !important)
+olx.pl##[class*="invoice" i] :is(td,th,p,span,h1,h2,h3,label,strong):style(color: #EAF0F1 !important)
+! Legacy top nav (ul.tabs2 with se_* links) and its labels.
+olx.pl##ul.tabs2, ul.tabs2 li, #header-container, #innerLayout > div:style(background-color: #12151B !important)
+olx.pl##ul.tabs2 :is(a,span), a[id^="se_"], a[id^="se_"] span, .fbold, #postNewAdLink, #postNewAdLink span:style(color: #EAF0F1 !important)
+! Legacy search box input.
+olx.pl###searchbox input, #se_search, input.se_search:style(background-color: #171F22 !important; color: #EAF0F1 !important; border-color: #3A3E44 !important)
+! Legacy page body content (#body, .content, .wrapper) and footer (ul.small).
+olx.pl###body, section#body, .content, .wrapper, .tcenter, footer, footer .wrapper:style(background-color: #12151B !important)
+olx.pl##.content :is(p,span,h1,h2,h3,a,label,td,th,li), p.c41, p.clr, footer :is(a,span,li), ul.small :is(a,span), a#postNewAdLink, a#postNewAdLink span:style(color: #EAF0F1 !important)
+! Legacy "Dodaj ogłoszenie" button keeps a light background - make it teal like the new one.
+olx.pl##a#postNewAdLink:style(background-color: #3CDED8 !important)
+olx.pl##a#postNewAdLink, a#postNewAdLink span:style(color: #02282C !important)
+olx.pl##[data-testid="loyalty-hub-main-wrapper"] :is(p,span,h1,h2,h3,h4,h5,h6,li,strong,b):not(button *):style(color: #EAF0F1 !important)
+olx.pl##[data-testid="order-card"] :is(p,span,h2,h3,h4,strong,b):not(button *):style(color: #EAF0F1 !important)
+! Secondary/muted account text gets a dimmer light gray for hierarchy.
+olx.pl##[data-testid="order-item-subtitle"], [data-testid="status-subtitle"], #payment-details [data-nx-name="P3"], #payment-details [data-nx-name="P4"]:style(color: #AEBEC2 !important)
+
+! Sub-tab bars inside account pages (data-testid="tabs-container": Kupujesz /
+! Sprzedajesz / Zgłoszenia i zwroty). No aria-selected: the active tab is marked
+! only by a darker color (#02282C), bold weight and a bottom border - all invisible
+! on dark. Make every tab light; the active one keeps its bold weight + we recolor
+! its bottom border to teal so it still reads as selected.
+! Sub-tabs in tabs-container / .tabs-wrapper (Kupujesz / Sprzedajesz / Zgłoszenia).
+! No aria-selected, but the ACTIVE tab has tabindex="-1" (inactive ones tabindex="0").
+! Inactive = light gray; active = teal text (keeps its bold weight + bottom border).
+olx.pl##[data-testid="tabs-container"] button, [data-testid="tabs-container"] [role="tab"], .tabs-wrapper button:style(color: #AEBEC2 !important)
+olx.pl##[data-testid="tabs-container"] button *, [data-testid="tabs-container"] [role="tab"] *, .tabs-wrapper button *:style(color: #AEBEC2 !important)
+olx.pl##[data-testid="tabs-container"] button[tabindex="-1"], .tabs-wrapper button[tabindex="-1"]:style(color: #3CDED8 !important; border-bottom-color: #3CDED8 !important)
+olx.pl##[data-testid="tabs-container"] button[tabindex="-1"] *, .tabs-wrapper button[tabindex="-1"] *:style(color: #3CDED8 !important)
+
+! Old-layout invoice page (body.myaccountv..., #header-container) uses a different,
+! light header. Darken its search bar and header.
+olx.pl###header-container, #searchbox, #innerLayout:style(background-color: #12151B !important)
+olx.pl###searchbox input:style(background-color: #171F22 !important; color: #EAF0F1 !important; border-color: #3A3E44 !important)
 
 ! ==== 6. Icons, carousels, ad slots ====
 ! Carousel arrows are black SVG background images.
@@ -182,7 +259,113 @@ olx.pl###onetrust-pc-sdk .ot-pc-footer-logo:style(background-color: #1E2026 !imp
 olx.pl###onetrust-pc-sdk .ot-pc-footer-logo img:style(filter: invert(1) hue-rotate(180deg) !important)
 olx.pl###onetrust-pc-sdk .ot-always-active:style(color: #8FB0FF !important)
 
-! ==== 8. Fewer promoted listings ====
+! ==== 8. Chat, messages, user account panel ====
+! Chat message bubble: dark teal background (#163F3F).
+olx.pl##[data-cy="chat-message-bubble"]:style(background-color: #163F3F !important)
+olx.pl##[data-testid="message"]:style(background-color: #163F3F !important)
+! The bubble's parent wrapper has a dynamically generated class, so match it by
+! :has() - any div that directly contains the bubble gets the same color.
+olx.pl##div:has(> [data-cy="chat-message-bubble"]):style(background-color: #163F3F !important)
+olx.pl##div:has(> [data-testid="message"]):style(background-color: #163F3F !important)
+! Message text (data-nx-name="TextContainer") - white for readability.
+olx.pl##[data-nx-name="TextContainer"]:style(color: #FFFFFF !important)
+olx.pl##[data-nx-name="TextContainer"] *:style(color: #FFFFFF !important)
+! Sent-message status icon: white, same as the message text.
+olx.pl##[data-testid="sentChatIcon-SENT"], [data-testid="status-icon-SENT"]:style(color: #FFFFFF !important; fill: #FFFFFF !important)
+olx.pl##[class*="sentChatIcon-SENT"]:style(color: #FFFFFF !important; fill: #FFFFFF !important)
+olx.pl##[class*="sentChatIcon-SENT"] svg, [class*="sentChatIcon-SENT"] path:style(color: #FFFFFF !important; fill: #FFFFFF !important)
+! Message time/status label (data-testid="message-status-label", P4) is a dark gray
+! that is unreadable on the dark bubble. Lighten it.
+olx.pl##[data-cy="sent-message"] [data-testid="message-status-label"]:style(color: #D8E3E4 !important)
+! Chat "scroll to bottom" floating button has a hard-coded white background.
+olx.pl##[data-testid="scroll-down-button__hidden"], [data-testid^="scroll-down-button"]:style(background-color: #23262D !important)
+olx.pl##[data-testid^="scroll-down-button"] svg:style(color: #EAF0F1 !important; fill: #EAF0F1 !important)
+! Message input (textarea data-nx-name="GrowingTextarea") has dark gray text on a
+! dark field - make it light and lighten the placeholder.
+olx.pl##[data-nx-name="GrowingTextarea"]:style(color: #EAF0F1 !important)
+olx.pl##[data-nx-name="GrowingTextarea"]::placeholder:style(color: #8A999D !important)
+! User account tabs (data-testid="tabs-*"). There is no aria-selected: the ACTIVE
+! tab is the one whose label is a <span> (current page) instead of an <a> link.
+! No teal pill (and no reliance on :has, which doesn't apply from an injected
+! stylesheet here). Remove the teal background from ALL tabs; the active tab's label
+! is a <span data-nx-name="Label*"> (vs an <a> on inactive ones), so give that span
+! teal text to mark it. Inactive tab links are light gray.
+olx.pl##[data-testid^="tabs-"]:style(background-color: transparent !important)
+olx.pl##[data-testid^="tabs-"] a:style(color: #AEBEC2 !important)
+olx.pl##[data-testid^="tabs-"] span[data-nx-name^="Label"]:style(color: #3CDED8 !important)
+
+! Payments submenu on /myaccount/history (links in div.css-scuypn, not ListContainer
+! tabs). Active sub-link is #02282C, others #7F9799 - both unreadable on dark.
+! No stable data-testid here, so match the submenu container + its hashed classes.
+olx.pl##.css-scuypn a, .css-scuypn a span:style(color: #AEBEC2 !important)
+olx.pl##.css-1j2ss1t, .css-1j2ss1t span:style(color: #3CDED8 !important)
+olx.pl##.css-1l0addq, .css-1l0addq span:style(color: #AEBEC2 !important)
+
+! ==== 8b. Extra account fixes (jobs, profile, dropdown arrows, tertiary btn) ====
+! Jobs profile page cards (completeness-aside-box / aside-box) - dark bg + light text.
+olx.pl##[data-testid="completeness-aside-box"], [data-testid="aside-box"]:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="completeness-aside-box"] :is(p,span,h1,h2,h3,h4,strong,b,li):not(button *), [data-testid="aside-box"] :is(p,span,h1,h2,h3,h4,strong,b,li):not(button *):style(color: #EAF0F1 !important)
+
+! Dark dropdown/select arrows SITEWIDE. OLX icons use the shared class .luv8E and
+! paint via currentColor #02282C; native <select> arrows follow the text color.
+! Lighten them so chevrons are visible on dark.
+olx.pl##svg.luv8E:not([data-button-variant="primary"] *):not([data-button-variant="alternative"] *):style(color: #EAF0F1 !important; fill: #EAF0F1 !important)
+olx.pl##svg.luv8E:not([data-button-variant="primary"] *):not([data-button-variant="alternative"] *) path:style(fill: #EAF0F1 !important)
+olx.pl##[data-testid="dropdown-input-chevron"], [data-testid="dropdown-input-chevron"] path:style(color: #EAF0F1 !important; fill: #EAF0F1 !important)
+olx.pl##select:style(color: #EAF0F1 !important)
+
+! Profile: eye-icon (show/hide) and the next icon are too dark; message-container
+! banner uses the pale blue #CEDDFF (rgb 206,221,255).
+olx.pl##[data-testid="eye-icon"], [data-testid="eye-icon"] path, [data-testid="eye-icon"] + div, [data-testid="eye-icon"] + div svg, [data-testid="eye-icon"] + div path:style(color: #EAF0F1 !important; fill: #EAF0F1 !important)
+olx.pl##[data-testid="message-container"]:style(background-color: #163F3F !important)
+olx.pl##[data-testid="message-container"] :is(p,span,h2,h3,strong,b,a):style(color: #EAF0F1 !important)
+
+! Tertiary buttons: keep transparent background, but OLX hard-codes --textColor:#02282C
+! (dark) which is invisible on dark. Force a light text instead.
+olx.pl##[data-button-variant="tertiary"]:style(background-color: transparent !important; color: #EAF0F1 !important)
+olx.pl##[data-button-variant="tertiary"] *:style(color: #EAF0F1 !important)
+
+! Jobs page highlight link .css-41lcx8: dark charcoal text on pale-blue bg. The bg
+! (LightBlue01) is already remapped dark in section 1, so just lighten the text.
+olx.pl##.css-41lcx8:style(color: #EAF0F1 !important)
+
+! Payments table ::before is a light-gray (#F2F4F5) 10px bar; match the cards next to it.
+olx.pl##[data-cy="payments-table-body"]::before:style(background-color: #23252A !important)
+
+! Chat conversation sub-filters (tab-active / aria-pressed Chip) sit on a light-teal
+! pill; make their text dark. Scoped to the chat tab selector + Chip buttons so it
+! does not darken pressed buttons elsewhere.
+olx.pl##[data-testid="tab-selector"] [data-testid="tab-active"], [data-testid="tab-selector"] [data-testid="tab-active"] *:style(color: #02282C !important)
+olx.pl##[data-testid="tab-selector"] [aria-pressed="true"], [data-testid="tab-selector"] [aria-pressed="true"] *, [data-nx-name="Chip"][aria-pressed="true"], [data-nx-name="Chip"][aria-pressed="true"] *:style(color: #02282C !important)
+
+! Ad limit list (ads-limit-list) text is too dark.
+olx.pl##[data-testid="ads-limit-list"], [data-testid="ads-limit-list"] :is(p,span,li,strong,b,div):style(color: #EAF0F1 !important)
+
+! Promotion dates etc. use attribute color="$07_charcoal" (= #02282C) hard-coded.
+! Stable hook: match the attribute directly so it survives class-hash changes.
+olx.pl##[color="$07_charcoal"]:style(color: #EAF0F1 !important)
+
+! Legacy invoice submenu (ul.subnav2): active item is li.selected, others plain.
+! Same scheme as the new history submenu: active = teal, rest = light gray.
+olx.pl##.subnav2 a, .subnav2 span, .subnav2 li:style(color: #AEBEC2 !important)
+olx.pl##.subnav2 li.selected, .subnav2 li.selected *, .subnav2 li.selected span, .subnav2 li.selected a:style(color: #3CDED8 !important)
+
+! Delivery claims page uses order_overview-wrapper as its container with dark text.
+olx.pl##[data-testid="order_overview-wrapper"] :is(h1,h2,h3,h4,h5,h6,p,span,li,strong,b):not([data-button-variant="primary"] *):not([data-button-variant="alternative"] *):style(color: #EAF0F1 !important)
+
+! Delivery buyer/seller pages: onboarding banner + sales-layout backgrounds, and
+! their dark text. Mirror the purchases (buyer) layout handling.
+olx.pl##[data-testid="onboarding-banner"]:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="onboarding-banner"] :is(p,span,h2,h3,h4,strong,b):style(color: #EAF0F1 !important)
+olx.pl##main[data-testid="sales-layout"], [data-testid="sales-layout"]:style(background-color: #12151B !important)
+olx.pl##[data-testid="sales-layout"] section, [data-testid="sales-layout"] [data-testid="order-card"]:style(background-color: #1E2026 !important)
+olx.pl##[data-testid="sales-layout"] :is(h1,h2,h3,h4,h5,h6,p,span,li,strong,b,td,th):not([data-button-variant="primary"] *):not([data-button-variant="alternative"] *):style(color: #EAF0F1 !important)
+! Copy icon on order cards is too dark.
+olx.pl##[data-testid="copy-icon"], [data-testid="copy-icon"] path:style(color: #EAF0F1 !important; fill: #EAF0F1 !important)
+! Order-card gray strip text (.css-atw5va) is too dark.
+olx.pl##.css-atw5va, .css-atw5va *:style(color: #AEBEC2 !important)
+
+! ==== 9. Fewer promoted listings ====
 ! OLX tags promoted results in the link: ...?search_reason=search|promoted
 ! Remove these two lines to keep promoted cards.
 olx.pl##[data-testid="l-card"]:has(a[href*="search_reason=search%7Cpromoted"])
