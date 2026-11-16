@@ -1,0 +1,236 @@
+
+! Ceneo dark mode for uBlock Origin (ceneo.pl)
+!
+! Design
+!  Ceneo paints most of its UI through design-system color tokens
+!  (--ceneo-color-*, defined on :root): surfaces, text, borders, accents.
+!  Re-defining the semantic tokens re-colors the bulk of the page in one place,
+!  before paint, so there is no flash and nothing reverts (same approach as the
+!  OLX list; no :matches-css()). A number of containers hard-code #fff / #f2f5f7
+!  instead of tokens, so they get targeted :style() hooks in section 2.
+! Palette: deep navy surfaces (#16202a / #1a2530 / #232f3b, matching Ceneo's own
+! --ceneo-color-background-black), light text, Ceneo orange accent kept (#ff6400).
+!
+! IMAGES: product photos must stay untouched. We only recolor placeholder/wrapper
+! backgrounds, never <img>/<picture>/<video>; images are force-kept transparent
+! and unfiltered in section 3 so photos look exactly as on the light theme.
+
+! ==== 1. Theme tokens (ceneo design system) ====
+! Surfaces -> navy; text -> near-white; borders -> dark; keep orange/blue accents.
+ceneo.pl##:root:style(color-scheme: dark !important; --ceneo-color-background-white: #1a2530 !important; --ceneo-color-background-2: #16202a !important; --ceneo-color-background-3: #232f3b !important; --ceneo-color-background-inverse: #e8ebed !important; --ceneo-color-background-highlight: #3a3320 !important; --ceneo-color-text: #e8ebed !important; --ceneo-color-text-2: #aeb9c2 !important; --ceneo-color-text-3: #8a97a1 !important; --ceneo-color-text-inverse: #16202a !important; --ceneo-color-text-fixed: #e8ebed !important; --ceneo-color-text-white: #e8ebed !important; --ceneo-color-border: #3a4551 !important; --ceneo-color-border-2: #2b3540 !important; --ceneo-color-gray-50: #16202a !important; --ceneo-color-gray-200: #2b3540 !important; --ceneo-color-gray-300: #3a4551 !important; --ceneo-color-black: #e8ebed !important; --ceneo-color-white: #1a2530 !important)
+
+! ==== 2. Containers with hard-coded #fff / #f2f5f7 (not tokens) ====
+! Page background.
+ceneo.pl##html:style(background-color: #16202a !important)
+ceneo.pl##body:style(background-color: #16202a !important)
+ceneo.pl###body:style(background-color: #16202a !important)
+ceneo.pl##.main-content:style(background-color: #16202a !important)
+! Top store-brand bar + top banner wrapper (keep logos visible; only darken bg).
+ceneo.pl##.store-zones:style(background-color: #16202a !important)
+! Brand-logo strip has white fade-out edges (gradient), redo them in page navy.
+ceneo.pl##.zones:style(background-image: linear-gradient(90deg, rgba(22, 32, 42, 0) 0, #16202a 5%, #16202a 95%, rgba(22, 32, 42, 0) 100%) !important)
+! Collapsed descriptions fade out into a light gradient (::after) that covers
+! text and photos; fade into the dark card / page color instead.
+ceneo.pl##.product-full-description::after:style(background-image: linear-gradient(rgba(26, 37, 48, 0), #1a2530) !important)
+ceneo.pl##.in-context__content::after:style(background-image: linear-gradient(rgba(0, 0, 0, 0) 25%, #232f3b 45%, rgba(0, 0, 0, 0) 50%) !important)
+ceneo.pl##.top-banner__bar-image:style(background-color: #16202a !important)
+! Product page: top product card, price box, description, article body, Q&A.
+ceneo.pl##.product-top__product:style(background-color: #1a2530 !important)
+ceneo.pl##.product-top__price:style(background-color: #1a2530 !important)
+ceneo.pl##.product-full-description:style(background-color: #1a2530 !important)
+ceneo.pl##[class*="lnd_article-main"]:style(background-color: #1a2530 !important)
+ceneo.pl##.user-post:style(background-color: #1a2530 !important)
+ceneo.pl##.page-tabs:style(background-color: #16202a !important)
+! Listing / search page: left filters, promoted asides, expert articles, rows.
+ceneo.pl##.cat-nav:style(background-color: #1a2530 !important)
+! Filter panel (Cena / Marka / checkboxes) – container hard-codes #fff, and the
+! price/brand inputs + checkbox rows keep black text, unreadable on dark.
+ceneo.pl##.cat-filters:style(background-color: #1a2530 !important; color: #e8ebed !important)
+ceneo.pl##.cat-filters *:style(color: #e8ebed !important)
+ceneo.pl##.filter-input:style(background-color: #16202a !important; border-color: #3a4551 !important)
+ceneo.pl##.cat-filters input, .cat-filters select:style(background-color: #16202a !important; color: #e8ebed !important; border-color: #3a4551 !important)
+ceneo.pl##.cat-filters input::placeholder:style(color: #8a97a1 !important)
+ceneo.pl##.filter-item, .filter-value:style(color: #e8ebed !important; background-color: transparent !important)
+! Filter section headings and the counts next to brands stay readable.
+ceneo.pl##.filter-value .filter-count, .filter-item span:style(color: #aeb9c2 !important)
+ceneo.pl##.filter-submit:style(background-color: #1a2530 !important)
+ceneo.pl##.cat-linked:style(background-color: #1a2530 !important)
+ceneo.pl##.prom-products:style(background-color: #1a2530 !important)
+ceneo.pl##.expert-articles:style(background-color: #1a2530 !important)
+ceneo.pl##.cat-prod-row:style(background-color: #1a2530 !important)
+! New React "cc-*" component library (search results, smart-search chat, cards).
+ceneo.pl##[class*="cc-chatContainer"]:style(background-color: #16202a !important)
+ceneo.pl##[class*="cc-productBox"]:style(background-color: #1a2530 !important; color: #e8ebed !important)
+! Loading skeletons (light shimmer bars) of the cc-* widgets.
+ceneo.pl##[class*="cc-imageBlend"], [class*="cc-textLine"]:style(background-image: linear-gradient(90deg, #232f3b 0%, #2b3540 50%, #232f3b 100%) !important)
+! Floating "Asystent AI" teaser: translucent white button + black text.
+ceneo.pl##.ai-assistant-teaser-root button:style(background-color: rgba(35, 47, 59, 0.92) !important; color: #e8ebed !important)
+ceneo.pl##.agent-teaser-expander:style(background-color: #3a4551 !important)
+! Dark header icons (user, mic) and price-history icon: invert, keep hue.
+ceneo.pl##.header__user__icon:style(filter: invert(1) hue-rotate(180deg) !important)
+ceneo.pl##.header-search__speech-btn:style(filter: invert(1) hue-rotate(180deg) !important)
+ceneo.pl##.price-history__icon:style(filter: invert(1) hue-rotate(180deg) !important)
+
+! ==== 2b. Landing / article blocks (lnd_*), coupons, recommendations ====
+! Generic lnd_wrapper surface (more specific rules below win where needed).
+ceneo.pl##.lnd_wrapper:style(background-color: #232f3b !important; color: #e8ebed !important)
+! lnd_* components (articles, coupon lists, matrix cards) hard-code text #313131.
+ceneo.pl##[class*="lnd_object"], [class*="lnd_coupon"], .lnd_card, .lnd_grid-items:style(color: #1a2530 !important)
+ceneo.pl##.lnd_coupon-item__description:style(color: #e8ebed !important)
+! Coupon head is white-on-orange in the original; keep pure white there.
+ceneo.pl##.lnd_coupon-item__head .lnd_coupon-item__value:style(color: #ffffff !important)
+ceneo.pl##.lnd_coupon-item__actions .lnd_coupon-item__expiration-label, .lnd_coupon-item__actions .lnd_coupon-item__expiration-date:style(color: #aeb9c2 !important)
+! Article headings/bold inside lnd_content inherit a hard-coded #313131.
+ceneo.pl##.lnd_content :is(h1, h2, h3, h4, h5, h6, b, strong):style(color: #e8ebed !important)
+ceneo.pl##.lnd_content .lnd_textcolor_accent, .lnd_textcolor_accent:style(color: #ff9d66 !important)
+! Product tiles in lnd_* carousels (home page): name #313131, votes #647481.
+ceneo.pl##.lnd_product .lnd_product-name:style(color: #1a2530 !important)
+ceneo.pl##.lnd_product .lnd_product-score, .lnd_product .lnd_product-votes:style(color: #8a97a1 !important)
+! Coupon "Odkryj kod" box (#e3e7eb) and its dark copy icon (SVG via ::before).
+ceneo.pl##.lnd_coupon-list__code-container:style(background-color: #232f3b !important; color: #e8ebed !important)
+ceneo.pl##.lnd_coupon-list__copy:style(filter: invert(1) !important)
+! Shop logo box in the coupon head stays white on purpose (dark logos need it).
+! Recommendation carousels: white arrow buttons (orange icon is kept).
+ceneo.pl##.scroll-carousel__prev, .scroll-carousel__next:style(background-color: rgba(35, 47, 59, 0.85) !important)
+! "Ulubione" heart on a white disc: invert disc + icon together, keep hue.
+ceneo.pl##.recommendation .add-to-favorite:style(filter: invert(1) hue-rotate(180deg) !important)
+! Badges ("Popularny teraz", "Bestseller"...) use inline pastel bg + dark text;
+! invert + hue-rotate turns every badge type dark while keeping its own hue.
+ceneo.pl##.special-offer__promotions-list__value:style(filter: invert(1) hue-rotate(180deg) !important)
+
+! Campaign containers (e.g. .insp_camp_ks on the home page) get their bg from a
+! per-page inline <style>: #fff on the home page, #202020 on dark campaign pages.
+! .lnd_container-grid inside is transparent, so the container is what shows.
+ceneo.pl##.insp_camp_ks:style(background-color: #1a2530 !important)
+! "Asystent Ceneo" bar on the home page (inline <style> sets background: #fff).
+ceneo.pl##.insp_camp_ks__button, .insp_camp_ks__button *:style(color: #e8ebed !important; border-color: #aeb9c2 !important)
+ceneo.pl##.asystent-ceneo-belka__inner:style(background: #1a2530 !important; color: #e8ebed !important)
+ceneo.pl##.asystent-ceneo-belka__name, .asystent-ceneo-belka__name *, .asystent-ceneo-belka__text, .asystent-ceneo-belka__text *:style(color: #e8ebed !important)
+! Icon menu (.lnd_suma__menu): inline <style> sets a { color: #000 !important }
+! and a white wrapper. Color goes on <a> so the orange p:hover still works.
+ceneo.pl##.lnd_suma__menu .lnd_wrapper:style(background-color: #1a2530 !important)
+ceneo.pl##body .lnd_suma__menu a:style(color: #e8ebed !important)
+ceneo.pl##.lnd_suma__menu .menu-img:style(border-color: #3a4551 !important)
+! Coupon campaign zones (e.g. /wydarzenia/cfree): inline <style> sets
+! .strefa_list_coupon .lnd_container-grid { background-color: #fff !important }.
+! Same pattern in .ins_strefa / .ins_strefa2 zones on the home page.
+ceneo.pl##.strefa_list_coupon .lnd_container-grid, .coupon_list .lnd_container-grid, .ins_strefa .lnd_container-grid, .ins_strefa2 .lnd_container-grid:style(background-color: #1a2530 !important)
+ceneo.pl##.coupon-actioninsplist .lnd_coupon-list__code-container, .lnd_coupon-item .lnd_coupon-list__code-container:style(background-color: #232f3b !important; border-color: #3a4551 !important; color: #e8ebed !important)
+! cfree landing sections (inline <style>: #fff / #f5f6f8 / gradient header).
+ceneo.pl##.lnd_cfree__header:style(background: #1a2530 !important)
+ceneo.pl##.lnd_cfree__info-small, .lnd_cfree__infotext, .lnd_FAQ .lnd_wrapper:style(background: #1a2530 !important)
+! "Nie zapomnij..." section: two-tone gradient #f3f5f7 / #fff -> page / card tones.
+ceneo.pl##.lnd_cfree__info:style(background: linear-gradient(#16202a 0%, #16202a 13%, #1a2530 13%, #1a2530 100%) !important)
+ceneo.pl##body .lnd_cfree__info .lnd_wrapper .lnd_container-grid:style(background: transparent !important)
+! Purple app banner: only its light top band (#f2f5f7, 0-10%) is swapped.
+ceneo.pl##.lnd_cfree__header2:style(background: linear-gradient(#1a2530 0%, #1a2530 10%, #ff6600 10%, #ff6400 12%, #3f2a8a 12%, #3f2a8a 100%) !important)
+ceneo.pl##.lnd_cfree__menu:style(background: #16202a !important)
+ceneo.pl##.lnd_content .lnd_cfree__menu a:style(background: #232f3b !important; border-color: #3a4551 !important; color: #e8ebed !important)
+! FAQ accordion titles (#f5f5f5, open state #e5e5e5 with orange text).
+ceneo.pl##.lnd_FAQ .expandable__title:style(background-color: #232f3b !important; color: #e8ebed !important)
+ceneo.pl##.lnd_FAQ .expandable__content:style(color: #e8ebed !important)
+! Headings/paragraphs hard-coded #000 / #222 (some with !important, hence body prefix).
+ceneo.pl##body .lnd_article-main [class*="lnd_cfree__"] :is(h1, h2, h3, h4, p, li):style(color: #e8ebed !important)
+! Dashed "free" code highlight (#fff0e7) -> translucent orange.
+ceneo.pl##body .lnd_cfree__info .head p span, body .lnd_cfree__infotext .infotext-cfree__list li p span:style(background-color: rgba(255, 100, 0, 0.15) !important; color: #e8ebed !important)
+ceneo.pl##.lnd_FAQ .expandable__toggle:checked + .expandable__separator + .expandable__title:style(background-color: #2b3540 !important; color: #ff6400 !important)
+
+! ==== 2d. Logged-in account app (Angular Material + Tailwind, ua-* elements) ====
+! Not verified live (needs login); built from the page markup. Colors come from
+! Tailwind utility classes (bg-white, bg-gray-50, text-black, text-gray).
+! bg-white / bg-gray-50 / mdc inputs are overridden globally; text-black stays
+! scoped (it is used for dark text on light badges elsewhere).
+ceneo.pl##html, body:style(--mat-sys-surface: #1a2530 !important; --mat-sys-on-surface: #e8ebed !important; --mat-sys-on-surface-variant: #aeb9c2 !important; --mat-sys-outline: #3a4551 !important; --mat-sys-outline-variant: #2b3540 !important; --mat-sys-surface-container: #2b3540 !important; --mat-icon-button-state-layer-color: #e8ebed !important; --mat-icon-button-hover-state-layer-opacity: 0.08 !important; --mat-icon-button-icon-color: #aeb9c2 !important)
+! Tailwind surfaces. img thumbnails also carry bg-white -> excluded (image safety).
+ceneo.pl##.bg-white:not(img):style(background-color: #1a2530 !important)
+ceneo.pl##.bg-gray-50:style(background-color: #232f3b !important)
+! Top toolbar (has bg-white).
+ceneo.pl##.mat-toolbar:style(background-color: #1a2530 !important; color: #e8ebed !important)
+ceneo.pl##.mat-toolbar button:hover:style(background-color: #2b3540 !important)
+! Icon buttons (e.g. more_vert menu trigger): Material state layer + Tailwind
+! hover:bg-white / hover:bg-gray-* turn white on hover -> subtle gray instead
+! (state-layer tokens are in the html, body rule above).
+ceneo.pl##:is(button, a, [role="button"]):has(.mat-icon):hover:style(background-color: #2b3540 !important)
+ceneo.pl##:is(button, a, [role="button"]):has(.mat-icon):hover .mat-icon:style(color: #e8ebed !important)
+! Content cards, e.g. purchase summary (ua-ceneo-section).
+ceneo.pl##.ceneo-section:style(background-color: #1a2530 !important; color: #e8ebed !important)
+ceneo.pl##.ceneo-section .text-gray:style(color: #aeb9c2 !important)
+ceneo.pl##.ceneo-section .border-t:style(border-color: #3a4551 !important)
+! Account footer "WYLOGUJ" button (bg-gray-50) hover.
+ceneo.pl##ua-navigation-footer button.bg-gray-50:hover:style(background-color: #2b3540 !important)
+! Material text fields (search in purchase history etc.) + gray icons.
+ceneo.pl##.mdc-text-field__input:style(color: #e8ebed !important; caret-color: #e8ebed !important)
+ceneo.pl##.mdc-text-field__input::placeholder:style(color: #8a97a1 !important)
+ceneo.pl##.mdc-notched-outline > *:style(border-color: #3a4551 !important)
+ceneo.pl##.mat-icon.text-gray-700:style(color: #aeb9c2 !important)
+ceneo.pl##.selection-chips__button:style(background-color: transparent !important; color: #e8ebed !important; border-color: #3a4551 !important)
+ceneo.pl##.selection-chips__button--active:style(background-color: #232f3b !important; border-color: #e8ebed !important)
+! Count badge keeps its light pill, so it needs dark text (it inherited #e8ebed).
+ceneo.pl##.selection-chips__button .selection-chips__count, .selection-chips__count:style(color: #16202a !important)
+ceneo.pl##.ceneo-section .tooltip__icon:style(color: #aeb9c2 !important)
+! Black labels/icons inside these components only.
+ceneo.pl##.mat-toolbar .text-black, .ceneo-section .text-black, ua-navigation-footer .text-black:style(color: #e8ebed !important)
+
+! ==== 2e. Cart (koszyk.ceneo.pl) – header, empty state, recommendations ====
+! Checkout app header: white bar, black back-arrow and "Witaj, <imię>".
+ceneo.pl##header.header:style(background-color: #1a2530 !important; color: #e8ebed !important)
+ceneo.pl##header.header .ceneo-base-button--color-black:style(color: #e8ebed !important)
+ceneo.pl##header.header .logged-user__text, header.header .logged-user__text *:style(color: #e8ebed !important)
+ceneo.pl##c-login-button .ceneo-base-button:style(background-color: #232f3b !important)
+ceneo.pl##c-login-button .ceneo-base-button, c-login-button .ceneo-base-button *:style(color: #6ec7ff !important)
+! Empty cart title.
+ceneo.pl##.empty-checkout__title:style(color: #e8ebed !important)
+! Empty-cart illustration (<img> SVG): black basket -> light; invert + hue-rotate
+! keeps the orange bars orange (#f86210 -> ~#ff6917). More specific than the
+! global img { filter: none } safety rule, so it wins.
+ceneo.pl##img[src*="empty_cart.svg"]:style(filter: invert(1) hue-rotate(180deg) !important)
+! Recommendation widget (cc-* = hashed class names, so match by prefix).
+ceneo.pl##[class*="cc-placement__"] > [class*="cc-row__"]:style(background-color: #1a2530 !important)
+ceneo.pl##[class*="cc-title__"]:style(color: #e8ebed !important)
+ceneo.pl##[class*="cc-chips__"]:style(background-color: transparent !important; color: #e8ebed !important; border-color: #3a4551 !important)
+ceneo.pl##[class*="cc-chips__"][aria-pressed="true"]:style(border-color: #e8ebed !important)
+ceneo.pl##[class*="cc-arrowButton__"]:style(background-color: rgba(35, 47, 59, 0.92) !important; color: #e8ebed !important)
+
+! ==== 2c. Product page leftovers ====
+! Spec table names: light bg (#e8ebed) + light text = unreadable.
+ceneo.pl##.product-spec__group__attributes__row__name:style(background-color: #232f3b !important; color: #e8ebed !important)
+! Rating popup, AI summary chips, "Ceneo Poleca" reel boxes, top banner strip.
+ceneo.pl##.score-extend:style(background-color: #1a2530 !important; color: #e8ebed !important)
+ceneo.pl##[class*="js_aisummary-feature-name"]:style(background-color: #232f3b !important; color: #e8ebed !important)
+ceneo.pl##.reel-box:style(background-color: #232f3b !important)
+ceneo.pl##.js_top-banner:style(background-color: #16202a !important)
+! Highlighted / special offers use cream #fff8e6 -> regular dark card surface
+! (cat-prod-row__body also wraps normal rows, so no separate highlight color).
+ceneo.pl##.product-offer__container:style(background-color: #1a2530 !important)
+ceneo.pl##.cat-prod-row__body:style(background-color: #1a2530 !important)
+! Dark text left on dark surfaces.
+! Listing rows: parameter values ("6,8 cala", "16 GB") are hard-coded #000.
+ceneo.pl##.cat-prod-row__params > li strong:style(color: #e8ebed !important)
+! Category title + product count.
+ceneo.pl##.cat-name__title, .cat-name__title *:style(color: #e8ebed !important)
+! AI / SEO markdown text under listings: container is dark, children inherit it
+! via `color: revert`, so recoloring the container fixes the whole subtree.
+ceneo.pl##[class*="cc-markdownContent"], [class*="cc-messagePlain"]:style(color: #e8ebed !important)
+! AI product carousel: "od" prefix inherits a dark container color (price keeps its own).
+ceneo.pl##[class*="cc-price"]:style(color: #aeb9c2 !important)
+! Related offers next to reviews: price hard-coded #000.
+ceneo.pl##.review-related-offers .price, .review-related-offers .price *:style(color: #e8ebed !important)
+ceneo.pl##.shipmentday-time:style(color: #aeb9c2 !important)
+ceneo.pl##.product-offer-summary__labels__shop-offer-promo__content:style(color: #ffbc99 !important)
+ceneo.pl##.page-tab__title:style(color: #e8ebed !important)
+! @mentions in reviews / Q&A and the sticky offer bar at the bottom.
+ceneo.pl##.user-post__mention:style(background-color: #6b6b6b !important)
+ceneo.pl##.sticky-offer-bar .sticky-offer:style(background-color: #232f3b !important)
+
+! ==== 3. IMAGE SAFETY (keep product photos exactly as-is) ====
+! Product thumbnails sit on a white placeholder/wrapper. Darken ONLY the wrapper,
+! never the photo itself. Images stay transparent + unfiltered + fully visible.
+ceneo.pl##[class*="cc-imageSkeleton"]:style(background-color: #232f3b !important)
+ceneo.pl##[class*="cc-imageWrapper"]:style(background-color: transparent !important)
+ceneo.pl##img:style(background-color: transparent !important; filter: none !important; opacity: 1 !important; visibility: visible !important)
+ceneo.pl##picture:style(background-color: transparent !important; filter: none !important; opacity: 1 !important; visibility: visible !important)
+ceneo.pl##video:style(background-color: transparent !important; filter: none !important; opacity: 1 !important; visibility: visible !important)
+
+! ==== 4. Hidden elements ====
+! Skyscraper ad zones on the page sides.
+ceneo.pl##[class*="zone-skyscrapers"]
